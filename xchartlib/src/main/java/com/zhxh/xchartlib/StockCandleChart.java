@@ -263,8 +263,6 @@ public class StockCandleChart extends View implements GestureDetector.OnGestureL
 
             return this;
         }
-
-        @UiThread
         public StockCandleChart build() {
             return new StockCandleChart(this);
         }
