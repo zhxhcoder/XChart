@@ -1,4 +1,4 @@
-package com.zhxh.android.xchart;
+package com.zhxh.xchart;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
