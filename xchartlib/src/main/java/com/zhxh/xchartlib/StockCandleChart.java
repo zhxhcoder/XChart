@@ -10,7 +10,6 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
 import android.graphics.Typeface;
-import android.support.annotation.UiThread;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.GestureDetector;
