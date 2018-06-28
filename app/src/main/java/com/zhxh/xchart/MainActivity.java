@@ -12,7 +12,6 @@ public class MainActivity extends AppCompatActivity {
     LineChart lineChart1;
     List<ChartData> dataList1;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,13 +31,7 @@ public class MainActivity extends AppCompatActivity {
         dataList1.add(new ChartData("05-09", "20"));
         dataList1.add(new ChartData("05-10", "18.8"));
 
-
-
-
         lineChart1.setViewData(dataList1);
-
-
-
 
     }
 }

@@ -24,12 +24,11 @@ import java.util.Map;
  */
 public class LineChart extends View {
 
-
     private Map<String, Float> dataMap; //坐标轴里面的点
     private List<Float> yList; // Y轴上点  从小到大排列
 
-    private List<AxisValue> dataList;
-    private List<AxisValue> normalList;
+    private List<? extends AxisValue> dataList;
+    private List<? extends AxisValue> normalList;
     private int dataNum;
     private int xNum;
     private int yNum;
@@ -218,7 +217,7 @@ public class LineChart extends View {
     }
 
 
-    public void setViewData(List<AxisValue> dataList) {
+    public void setViewData(List<? extends AxisValue> dataList) {
 
         this.dataList = dataList;
         dataNum = dataList.size();
@@ -333,7 +332,7 @@ public class LineChart extends View {
         return yValue;
     }
 
-    public float getMaxValue(List<AxisValue> dataList) {
+    public float getMaxValue(List<? extends AxisValue> dataList) {
 
         float maxValue = 0;
 
@@ -349,7 +348,7 @@ public class LineChart extends View {
 
     }
 
-    public float getMinValue(List<AxisValue> dataList) {
+    public float getMinValue(List<? extends AxisValue> dataList) {
 
         float minValue = Float.parseFloat(dataList.get(0).yValue());
 
