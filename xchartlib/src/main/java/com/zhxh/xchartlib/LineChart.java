@@ -2,9 +2,14 @@ package com.zhxh.xchartlib;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PointF;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.View;
 
 import java.util.List;
@@ -14,6 +19,7 @@ import java.util.Map;
  * Created by zhxh on 2018/5/28
  */
 public class LineChart extends View {
+
 
     private Map<String, Float> dataMap; //坐标轴里面的点
     private List<Float> yList; // Y轴上点  从小到大排列
@@ -26,8 +32,6 @@ public class LineChart extends View {
 
     private float yHeightPerValue;
 
-    private float canvasWight;
-    private float canvasHeight;
     private float density;
 
     private Paint paintTextWhite;
@@ -38,12 +42,33 @@ public class LineChart extends View {
     private Paint paintGradient;
 
 
+    /**
+     * 坐标轴 原点 x点y点
+     */
+    private PointF pOrigin;
+    private PointF pRight;
+    private PointF pTop;
+
+    private Bitmap bitmapTips;
+    private Bitmap bitmapDot;
+
+    private float minY;
+    private float maxY;
+
+    private static final int intervals = 87;
+    private float xOffset;
+    private Canvas canvas;
+
+
+    /**************************自定义数据****************************/
+
+
     private boolean isAnim;
-    private int axisColor;
-    private int textColor;
-    private int lineColor;
-    private int chartHeight;
-    private int chartWidth;
+    private int axisColor = 0xFFFFF0FF;
+    private int textColor = 0xFFF0FFFF;
+    private int lineColor = 0xFFFF0F0F;
+    private float canvasHeight;
+    private float canvasWidth;
 
 
     /**
@@ -80,8 +105,8 @@ public class LineChart extends View {
         int axisColor;
         int textColor;
         int lineColor;
-        int chartHeight;
-        int chartWidth;
+        int canvasHeight;
+        int canvasWidth;
 
         public Builder(Context context) {
             this.context = context;
@@ -107,13 +132,13 @@ public class LineChart extends View {
             return this;
         }
 
-        public Builder chartHeight(int chartHeight) {
-            this.chartHeight = chartHeight;
+        public Builder canvasHeight(int canvasHeight) {
+            this.canvasHeight = canvasHeight;
             return this;
         }
 
-        public Builder chartWidth(int chartWidth) {
-            this.chartWidth = chartWidth;
+        public Builder canvasWidth(int canvasWidth) {
+            this.canvasWidth = canvasWidth;
             return this;
         }
 
@@ -125,6 +150,13 @@ public class LineChart extends View {
 
     private void init(Builder builder, AttributeSet attrs) {
 
+        isAnim = builder.isAnim;
+        axisColor = builder.axisColor;
+        textColor = builder.textColor;
+        lineColor = builder.lineColor;
+        canvasHeight = builder.canvasHeight;
+        canvasWidth = builder.canvasWidth;
+
         if (attrs != null) {
             TypedArray a = builder.context.obtainStyledAttributes(attrs, R.styleable.LineChart);
 
@@ -132,11 +164,248 @@ public class LineChart extends View {
             axisColor = a.getColor(R.styleable.LineChart_XaxisColor, axisColor);
             textColor = a.getColor(R.styleable.LineChart_XtextColor, textColor);
             lineColor = a.getColor(R.styleable.LineChart_XlineColor, lineColor);
-            chartHeight = a.getDimensionPixelSize(R.styleable.LineChart_XchartHeight, chartHeight);
-            chartWidth = a.getDimensionPixelSize(R.styleable.LineChart_XchartWidth, chartWidth);
+            canvasHeight = a.getDimensionPixelSize(R.styleable.LineChart_XcanvasHeight, (int) canvasHeight);
+            canvasWidth = a.getDimensionPixelSize(R.styleable.LineChart_XcanvasWidth, (int) canvasWidth);
         }
+
+
+        DisplayMetrics displayMetrics = builder.context.getResources().getDisplayMetrics();
+
+
+        density = displayMetrics.density;
+
+
+        paintTextWhite = new Paint();
+        paintTextWhite.setAntiAlias(true);
+        paintTextWhite.setColor(Color.WHITE);
+        paintTextWhite.setStrokeWidth(5 * density);
+        paintTextWhite.setTextSize(10f * density);
+
+        paintTextGrey = new Paint();
+        paintTextGrey.setAntiAlias(true);
+        paintTextGrey.setColor(textColor);
+        paintTextGrey.setStrokeWidth(2 * density);
+        paintTextGrey.setTextSize(10f * density);
+
+        paintLineBlue = new Paint();
+        paintLineBlue.setAntiAlias(true);
+        paintLineBlue.setColor(lineColor);
+        paintLineBlue.setStrokeWidth(2 * density);
+
+        paintLineGrey = new Paint();
+        paintLineGrey.setAntiAlias(true);
+        paintLineGrey.setColor(lineColor);
+        paintLineGrey.setStrokeWidth(1 * density);
+
+        paintGradient = new Paint();
+        paintGradient.setAntiAlias(true);
+        paintGradient.setColor(lineColor);
+        paintGradient.setStrokeWidth(1 * density);
+
+
+        /**
+         * 初始化数据
+         */
+
+        pOrigin = new PointF();
+        pRight = new PointF();
+        pTop = new PointF();
+
+        pOrigin.set(canvasWidth * 0.19f, canvasHeight * 0.8f);
+        pRight.set(canvasWidth * 0.9f, canvasHeight * 0.8f);
+        pTop.set(canvasWidth * 0.19f, canvasHeight * 0.1f);
+
 
     }
 
 
+    public void setViewData(List<FundChartData> dataList, boolean isAnim) {
+
+        this.isAnim = isAnim;
+        this.dataList = dataList;
+        dataNum = dataList.size();
+
+
+        if (dataNum == 0) {
+            return;
+        }
+
+        dataMap = new HashMap<String, Float>();
+        yList = new ArrayList<Float>();
+
+        for (FundChartData data : dataList) {
+
+            if (!CommonUtils.isNull(data.getDate()) && !CommonUtils.isNull(data.getValue()))
+                dataMap.put(data.getDate(), Float.valueOf(data.getValue()));
+        }
+
+        xNum = 7;
+        yNum = 5;
+        minY = getMinValue(dataList) - (getMaxValue(dataList) - getMinValue(dataList)) / 2;
+        maxY = getMaxValue(dataList) + (getMaxValue(dataList) - getMinValue(dataList)) / 2;
+
+        yHeightPerValue = (pOrigin.y - pTop.y) / (maxY - minY);
+
+        for (int i = 0; i < yNum; i++) {
+            yList.add(minY + (i) * (maxY - minY) / (yNum - 1));
+        }
+
+        bitmapTips = BitmapFactory.decodeResource(getResources(), R.drawable.fund_chart_bubble);
+        bitmapDot = BitmapFactory.decodeResource(getResources(), R.drawable.fund_chart_dot);
+
+        invalidate();
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+
+        if (dataNum == 0) {
+            return;
+        }
+        this.canvas = canvas;
+
+        /**
+         * 画横线  以及Y轴左面的数值 从下往上
+         */
+        float yOffset = 30f * density;
+
+        for (int i = 0; i < yNum; i++) {
+
+            canvas.drawLine(pOrigin.x,
+                    pOrigin.y - i * yOffset,
+                    pRight.x,
+                    pRight.y - i * yOffset, paintLineGrey);
+
+            canvas.drawText(String.format("%.4f", yList.get(i) / 1000),
+                    pOrigin.x - 45 * density,
+                    pOrigin.y - i * yOffset + 3 * density,
+                    paintTextGrey);
+
+        }
+
+
+        /**
+         * 画坐标竖线 以及x轴下面的日期 从左往右
+         */
+
+        xOffset = 42f * density;
+
+        if (CommonDataManager.screenWight < 720) {
+            //小屏手机
+            xOffset = 37f * density;
+        }
+
+        for (int i = 0; i < xNum; i++) {
+
+            canvas.drawLine(pOrigin.x + i * xOffset, pOrigin.y, pTop.x + i * xOffset, pTop.y, paintLineGrey);
+
+            canvas.drawText(dataList.get(i).getDate(), pOrigin.x + i * xOffset - 5 * density, pOrigin.y + 18 * density, paintTextGrey);
+
+        }
+
+
+        /*************************************************************************/
+        /**
+         * 点 已经 线
+         */
+
+        if (isAnim) {
+            for (int i = 0; i < progress; i++) {
+                drawItemData(i);
+            }
+            getHandler().postDelayed(runnable, intervals);
+
+        } else {
+            for (int i = 0; i < dataNum; i++) {
+                drawItemData(i);
+            }
+        }
+
+    }
+
+    private int progress = 0;
+    private Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            if (progress == dataNum) {
+                return;
+            }
+            progress++;
+            invalidate();
+        }
+    };
+
+
+    private float getDataYvalue(float dateProfit) {
+
+        float yValue = pOrigin.y - yHeightPerValue * (dateProfit - minY);
+
+        return yValue;
+    }
+
+    public float getMaxValue(List<FundChartData> dataList) {
+
+        float maxValue = 0;
+
+        for (FundChartData data : dataList) {
+
+            if (Float.parseFloat(data.getValue()) >= maxValue) {
+                maxValue = Float.parseFloat(data.getValue());
+            }
+
+        }
+
+        return maxValue;
+
+    }
+
+    public float getMinValue(List<FundChartData> dataList) {
+
+        float minValue = Float.parseFloat(dataList.get(0).getValue());
+
+        for (FundChartData data : dataList) {
+
+            if (Float.parseFloat(data.getValue()) <= minValue) {
+                minValue = Float.parseFloat(data.getValue());
+            }
+        }
+
+        return minValue;
+
+    }
+
+    private void drawItemData(int i) {
+
+        canvas.drawPoint(pOrigin.x + i * xOffset, getDataYvalue(dataMap.get(dataList.get(i).getDate())), paintLineBlue);
+
+        canvas.drawLine(pOrigin.x + i * xOffset, pOrigin.y
+                , pOrigin.x + i * xOffset, getDataYvalue(dataMap.get(dataList.get(i).getDate())), paintGradient);
+
+
+        if (i >= 1) {
+
+            canvas.drawLine(pOrigin.x + (i - 1) * xOffset, getDataYvalue(dataMap.get(dataList.get((i - 1)).getDate()))
+                    , pOrigin.x + i * xOffset, getDataYvalue(dataMap.get(dataList.get(i).getDate())), paintLineBlue);
+
+        }
+
+        if (i == dataNum - 1) {
+
+            canvas.drawBitmap(bitmapDot,
+                    pOrigin.x + i * xOffset - bitmapDot.getWidth() / 2,
+                    getDataYvalue(dataMap.get(dataList.get(i).getDate())) - bitmapDot.getHeight() / 2,
+                    paintLineBlue);
+
+            canvas.drawBitmap(bitmapTips,
+                    pOrigin.x + i * xOffset - 35 * density,
+                    getDataYvalue(dataMap.get(dataList.get(i).getDate())) - 30 * density,
+                    paintLineBlue);
+
+            canvas.drawText(String.format("%.4f", Float.parseFloat(dataList.get(i).getValue()) / 1000),
+                    pOrigin.x + i * xOffset - 31 * density,
+                    getDataYvalue(dataMap.get(dataList.get(i).getDate())) - 28 * density + bitmapTips.getHeight() / 2,
+                    paintTextWhite);
+        }
+
+    }
 }

@@ -5,7 +5,7 @@
         <attr name="XaxisColor" format="color" />
         <attr name="XtextColor" format="color" />
         <attr name="XlineColor" format="color" />
-        <attr name="XchartHeight" format="dimension" />
-        <attr name="XchartWidth" format="dimension" />
+        <attr name="XcanvasHeight" format="dimension" />
+        <attr name="XcanvasWidth" format="dimension" />
     </declare-styleable>
 </resources>
