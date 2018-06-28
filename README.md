@@ -12,14 +12,14 @@ XChart, 自定义可灵活配置的图表库
 <dependency>
   <groupId>com.zhxh</groupId>
   <artifactId>xchartlib</artifactId>
-  <version>1.4</version>
+  <version>2.1</version>
   <type>pom</type>
 </dependency>
 ~~~
 或
 ~~~
-compile 'com.zhxh:xchartlib:1.4'
-implementation 'com.zhxh:xchartlib:1.4'
+compile 'com.zhxh:xchartlib:2.1'
+implementation 'com.zhxh:xchartlib:2.1'
 ~~~
 
 ## LineChart配置
