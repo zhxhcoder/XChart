@@ -323,7 +323,6 @@ public class LineChart extends View {
         float xShowOffset = (pRight.x - pOrigin.x) / (showXcount - 1);
         for (int i = 0; i < showXcount; i++) {
             //canvas.drawLine(pOrigin.x + i * xShowOffset, pOrigin.y, pTop.x + i * xShowOffset, pTop.y, paintAxis);
-
             if (i == 0) {
                 canvas.drawText(dataList.get(i).xValue(),
                         pOrigin.x + i * xShowOffset,
