@@ -21,10 +21,16 @@ public class MainActivity extends AppCompatActivity {
         lineChart1 = findViewById(R.id.lineChart1);
 
         dataList1 = new ArrayList<>();
-        dataList1.add(new ChartData("05-01", "10"));
+        dataList1.add(new ChartData("05-01", "10.1"));
         dataList1.add(new ChartData("05-02", "12"));
         dataList1.add(new ChartData("05-03", "15"));
-        dataList1.add(new ChartData("05-03", "15"));
+        dataList1.add(new ChartData("05-04", "15"));
+        dataList1.add(new ChartData("05-05", "18"));
+        dataList1.add(new ChartData("05-06", "8.8"));
+        dataList1.add(new ChartData("05-07", "9.8"));
+        dataList1.add(new ChartData("05-08", "5.8"));
+        dataList1.add(new ChartData("05-09", "20"));
+        dataList1.add(new ChartData("05-10", "18.8"));
 
 
     }
