@@ -6,6 +6,22 @@ XChart, 自定义可灵活配置的图表库
 
 ![](https://github.com/zhxhcoder/XChart/blob/master/screenshots/xchart.png)
 
+## LinChart引用
+
+~~~
+<dependency>
+  <groupId>com.zhxh</groupId>
+  <artifactId>xchartlib</artifactId>
+  <version>1.4</version>
+  <type>pom</type>
+</dependency>
+~~~
+或
+~~~
+compile 'com.zhxh:xchartlib:1.4'
+implementation 'com.zhxh:xchartlib:1.4'
+~~~
+
 ## LineChart配置
 ~~~
 
