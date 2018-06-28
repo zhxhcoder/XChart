@@ -11,7 +11,7 @@ import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.View;
 
-import com.zhxh.xchartlib.entity.AxisValue;
+import com.zhxh.xchartlib.entity.IAxisValue;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +26,7 @@ public class LineChart extends View {
     private Map<String, Float> dataMap; //坐标轴里面的点
     private List<Float> yList; // Y轴上点  从小到大排列
 
-    private List<? extends AxisValue> dataList;
+    private List<? extends IAxisValue> dataList;
     private int dataNum;
 
     private float yHeightPerValue;
@@ -201,7 +201,7 @@ public class LineChart extends View {
     }
 
 
-    public LineChart bindData(List<? extends AxisValue> dataList) {
+    public LineChart bindData(List<? extends IAxisValue> dataList) {
 
         this.dataList = dataList;
         dataNum = dataList.size();
@@ -213,7 +213,7 @@ public class LineChart extends View {
         dataMap = new HashMap<String, Float>();
         yList = new ArrayList<Float>();
 
-        for (AxisValue data : dataList) {
+        for (IAxisValue data : dataList) {
 
             if (!TextUtils.isEmpty(data.xValue()) && !TextUtils.isEmpty(data.yValue()))
                 dataMap.put(data.xValue(), Float.valueOf(data.yValue()));
@@ -310,9 +310,9 @@ public class LineChart extends View {
         return pOrigin.y - yHeightPerValue * (dateProfit - minY);
     }
 
-    public float getMaxValue(List<? extends AxisValue> dataList) {
+    public float getMaxValue(List<? extends IAxisValue> dataList) {
         float maxValue = 0;
-        for (AxisValue data : dataList) {
+        for (IAxisValue data : dataList) {
             if (Float.parseFloat(data.yValue()) >= maxValue) {
                 maxValue = Float.parseFloat(data.yValue());
             }
@@ -320,9 +320,9 @@ public class LineChart extends View {
         return maxValue;
     }
 
-    public float getMinValue(List<? extends AxisValue> dataList) {
+    public float getMinValue(List<? extends IAxisValue> dataList) {
         float minValue = Float.parseFloat(dataList.get(0).yValue());
-        for (AxisValue data : dataList) {
+        for (IAxisValue data : dataList) {
             if (Float.parseFloat(data.yValue()) <= minValue) {
                 minValue = Float.parseFloat(data.yValue());
             }

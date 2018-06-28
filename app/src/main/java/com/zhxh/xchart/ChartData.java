@@ -1,11 +1,11 @@
 package com.zhxh.xchart;
 
-import com.zhxh.xchartlib.entity.AxisValue;
+import com.zhxh.xchartlib.entity.IAxisValue;
 
 /**
  * Created by zhxh on 2018/6/28
  */
-public class ChartData implements AxisValue {
+public class ChartData implements IAxisValue {
 
     private String date;
     private String value;
