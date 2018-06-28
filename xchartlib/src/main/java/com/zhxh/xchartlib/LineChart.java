@@ -28,8 +28,6 @@ public class LineChart extends View {
 
     private List<? extends AxisValue> dataList;
     private int dataNum;
-    private int xNum;
-    private int yNum;
 
     private float yHeightPerValue;
 
@@ -50,11 +48,13 @@ public class LineChart extends View {
     private float maxY;
 
     private static final int intervals = 87;
-    private float xOffset;
+    private float xDataOffset;
     private Canvas canvas;
 
 
     private boolean isAnim;
+    private int showXcount;
+    private int showYcount;
 
 
     /**
@@ -151,14 +151,14 @@ public class LineChart extends View {
             lineColor = a.getColor(R.styleable.LineChart_XlineColor, lineColor);
             canvasHeight = a.getDimensionPixelSize(R.styleable.LineChart_XcanvasHeight, (int) canvasHeight);
             canvasWidth = a.getDimensionPixelSize(R.styleable.LineChart_XcanvasWidth, (int) canvasWidth);
+            showXcount = a.getInt(R.styleable.LineChart_XshowXcount, showXcount);
+            showYcount = a.getInt(R.styleable.LineChart_XshowYcount, showYcount);
         }
 
 
         DisplayMetrics displayMetrics = builder.context.getResources().getDisplayMetrics();
 
-
         density = displayMetrics.density;
-
 
         paintText = new Paint();
         paintText.setAntiAlias(true);
@@ -176,9 +176,6 @@ public class LineChart extends View {
         paintLine.setColor(lineColor);
         paintLine.setStrokeWidth(0.5f * density);
 
-        /**
-         * 初始化数据
-         */
         pOrigin = new PointF();
         pRight = new PointF();
         pTop = new PointF();
@@ -186,7 +183,6 @@ public class LineChart extends View {
         pOrigin.set(canvasWidth * 0.19f, canvasHeight * 0.8f);
         pRight.set(canvasWidth * 0.9f, canvasHeight * 0.8f);
         pTop.set(canvasWidth * 0.19f, canvasHeight * 0.1f);
-
     }
 
 
@@ -208,17 +204,14 @@ public class LineChart extends View {
                 dataMap.put(data.xValue(), Float.valueOf(data.yValue()));
         }
 
-        xNum = 7;
-        yNum = 5;
-        minY = getMinValue(dataList) - (getMaxValue(dataList) - getMinValue(dataList)) / 2;
-        maxY = getMaxValue(dataList) + (getMaxValue(dataList) - getMinValue(dataList)) / 2;
+        minY = getMinValue(dataList);
+        maxY = getMaxValue(dataList);
 
         yHeightPerValue = (pOrigin.y - pTop.y) / (maxY - minY);
 
-        for (int i = 0; i < yNum; i++) {
-            yList.add(minY + (i) * (maxY - minY) / (yNum - 1));
+        for (int i = 0; i < showYcount; i++) {
+            yList.add(minY + (i) * (maxY - minY) / (showYcount - 1));
         }
-
 
         invalidate();
     }
@@ -234,9 +227,9 @@ public class LineChart extends View {
         /**
          * 画横线  以及Y轴左面的数值 从下往上
          */
-        float yOffset = 30f * density;
+        float yOffset = (pOrigin.y - pTop.y) / (showYcount - 1);
 
-        for (int i = 0; i < yNum; i++) {
+        for (int i = 0; i < showYcount; i++) {
 
             canvas.drawLine(pOrigin.x,
                     pOrigin.y - i * yOffset,
@@ -252,14 +245,15 @@ public class LineChart extends View {
         /**
          * 画坐标竖线 以及x轴下面的日期 从左往右
          */
-        xOffset = 42f * density;
-        for (int i = 0; i < xNum; i++) {
-            canvas.drawLine(pOrigin.x + i * xOffset, pOrigin.y, pTop.x + i * xOffset, pTop.y, paintAxis);
-            canvas.drawText(dataList.get(i).xValue(), pOrigin.x + i * xOffset - 5 * density, pOrigin.y + 18 * density, paintText);
+        float xShowOffset = (pRight.x - pOrigin.x) / (showXcount - 1);
+        for (int i = 0; i < showXcount; i++) {
+            canvas.drawLine(pOrigin.x + i * xShowOffset, pOrigin.y, pTop.x + i * xShowOffset, pTop.y, paintAxis);
+            canvas.drawText(dataList.get(i).xValue(), pOrigin.x + i * xShowOffset - 5 * density, pOrigin.y + 18 * density, paintText);
         }
 
 
         /*************************************************************************/
+        xDataOffset = (pRight.x - pOrigin.x) / (dataNum - 1);
 
         if (isAnim) {
             for (int i = 0; i < progress; i++) {
@@ -289,54 +283,40 @@ public class LineChart extends View {
 
 
     private float getDataYvalue(float dateProfit) {
-
-        float yValue = pOrigin.y - yHeightPerValue * (dateProfit - minY);
-
-        return yValue;
+        return pOrigin.y - yHeightPerValue * (dateProfit - minY);
     }
 
     public float getMaxValue(List<? extends AxisValue> dataList) {
-
         float maxValue = 0;
-
         for (AxisValue data : dataList) {
-
             if (Float.parseFloat(data.yValue()) >= maxValue) {
                 maxValue = Float.parseFloat(data.yValue());
             }
-
         }
-
         return maxValue;
-
     }
 
     public float getMinValue(List<? extends AxisValue> dataList) {
-
         float minValue = Float.parseFloat(dataList.get(0).yValue());
-
         for (AxisValue data : dataList) {
-
             if (Float.parseFloat(data.yValue()) <= minValue) {
                 minValue = Float.parseFloat(data.yValue());
             }
         }
-
         return minValue;
-
     }
 
     private void drawItemData(int i) {
 
-        canvas.drawPoint(pOrigin.x + i * xOffset, getDataYvalue(dataMap.get(dataList.get(i).xValue())), paintLine);
+        canvas.drawPoint(pOrigin.x + i * xDataOffset, getDataYvalue(dataMap.get(dataList.get(i).xValue())), paintLine);
 
-        canvas.drawLine(pOrigin.x + i * xOffset, pOrigin.y
-                , pOrigin.x + i * xOffset, getDataYvalue(dataMap.get(dataList.get(i).xValue())), paintLine);
+        canvas.drawLine(pOrigin.x + i * xDataOffset, pOrigin.y
+                , pOrigin.x + i * xDataOffset, getDataYvalue(dataMap.get(dataList.get(i).xValue())), paintLine);
 
         if (i >= 1) {
 
-            canvas.drawLine(pOrigin.x + (i - 1) * xOffset, getDataYvalue(dataMap.get(dataList.get((i - 1)).xValue()))
-                    , pOrigin.x + i * xOffset, getDataYvalue(dataMap.get(dataList.get(i).xValue())), paintLine);
+            canvas.drawLine(pOrigin.x + (i - 1) * xDataOffset, getDataYvalue(dataMap.get(dataList.get((i - 1)).xValue()))
+                    , pOrigin.x + i * xDataOffset, getDataYvalue(dataMap.get(dataList.get(i).xValue())), paintLine);
 
         }
 
