@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="LineChart">
+        <attr name="XisAnim" format="boolean" />
+        <attr name="XaxisColor" format="color" />
+        <attr name="XtextColor" format="color" />
+        <attr name="XlineColor" format="color" />
+        <attr name="XchartHeight" format="dimension" />
+        <attr name="XchartWidth" format="dimension" />
+    </declare-styleable>
+</resources>
