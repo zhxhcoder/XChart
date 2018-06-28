@@ -266,15 +266,26 @@ public class LineChart extends View {
 
         /**
          * 画坐标竖线 以及x轴下面的日期 从左往右
+         * 当第一项或最后一项时特殊处理
          */
         float xShowOffset = (pRight.x - pOrigin.x) / (showXcount - 1);
         for (int i = 0; i < showXcount; i++) {
             //canvas.drawLine(pOrigin.x + i * xShowOffset, pOrigin.y, pTop.x + i * xShowOffset, pTop.y, paintAxis);
-            canvas.drawText(dataList.get(i).xValue(),
-                    pOrigin.x + i * xShowOffset - paintText.measureText(dataList.get(i).xValue()) / 2,
-                    pOrigin.y + 18 * density, paintText);
-        }
 
+            if (i == 0) {
+                canvas.drawText(dataList.get(i).xValue(),
+                        pOrigin.x + i * xShowOffset,
+                        pOrigin.y + 18 * density, paintText);
+            } else if (i == showXcount - 1) {
+                canvas.drawText(dataList.get(i).xValue(),
+                        pOrigin.x + i * xShowOffset - paintText.measureText(dataList.get(i).xValue()),
+                        pOrigin.y + 18 * density, paintText);
+            } else {
+                canvas.drawText(dataList.get(i).xValue(),
+                        pOrigin.x + i * xShowOffset - paintText.measureText(dataList.get(i).xValue()) / 2,
+                        pOrigin.y + 18 * density, paintText);
+            }
+        }
 
         /*************************************************************************/
         xDataOffset = (pRight.x - pOrigin.x) / (dataNum - 1);
