@@ -10,6 +10,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     LineChart lineChart1;
+    LineChart lineChart2;
     List<ChartData> dataList1;
 
     @Override
@@ -18,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         lineChart1 = findViewById(R.id.lineChart1);
+        lineChart2 = findViewById(R.id.lineChart2);
 
         dataList1 = new ArrayList<>();
         dataList1.add(new ChartData("05-01", "10.1"));
@@ -31,7 +33,11 @@ public class MainActivity extends AppCompatActivity {
         dataList1.add(new ChartData("05-09", "20"));
         dataList1.add(new ChartData("05-10", "18.8"));
 
-        lineChart1.setViewData(dataList1);
+        lineChart1.bindData(dataList1);
+        lineChart1.show();
+
+        lineChart2.bindData(dataList1);
+        lineChart2.show();
 
     }
 }

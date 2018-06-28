@@ -9,5 +9,6 @@
         <attr name="XcanvasWidth" format="dimension" />
         <attr name="XshowXcount" format="integer" />
         <attr name="XshowYcount" format="integer" />
+        <attr name="XshowYType" format="integer" />
     </declare-styleable>
 </resources>
