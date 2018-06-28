@@ -4,7 +4,7 @@ XChart, 自定义可灵活配置的图表库
 
 ## LineChart效果
 
-![](https://github.com/zhxhcoder/XChart/blob/master/screenshots/xchart.png)
+![](https://github.com/zhxhcoder/XChart/blob/master/screenshots/linechart.png)
 
 ## LinChart引用
 
