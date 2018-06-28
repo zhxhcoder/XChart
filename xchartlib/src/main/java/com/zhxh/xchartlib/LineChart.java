@@ -169,12 +169,12 @@ public class LineChart extends View {
         paintAxis = new Paint();
         paintAxis.setAntiAlias(true);
         paintAxis.setColor(axisColor);
-        paintAxis.setStrokeWidth(1 * density);
+        paintAxis.setStrokeWidth(0.5f * density);
 
         paintLine = new Paint();
         paintLine.setAntiAlias(true);
         paintLine.setColor(lineColor);
-        paintLine.setStrokeWidth(0.5f * density);
+        paintLine.setStrokeWidth(1f * density);
 
         pOrigin = new PointF();
         pRight = new PointF();
@@ -236,7 +236,7 @@ public class LineChart extends View {
                     pRight.x,
                     pRight.y - i * yOffset, paintAxis);
             canvas.drawText(String.format("%.2f", yList.get(i)),
-                    pOrigin.x - 45 * density,
+                    pOrigin.x - paintText.measureText(String.format("%.2f", yList.get(i))) - 5 * density,
                     pOrigin.y - i * yOffset + 3 * density,
                     paintText);
 
@@ -247,8 +247,10 @@ public class LineChart extends View {
          */
         float xShowOffset = (pRight.x - pOrigin.x) / (showXcount - 1);
         for (int i = 0; i < showXcount; i++) {
-            canvas.drawLine(pOrigin.x + i * xShowOffset, pOrigin.y, pTop.x + i * xShowOffset, pTop.y, paintAxis);
-            canvas.drawText(dataList.get(i).xValue(), pOrigin.x + i * xShowOffset - 5 * density, pOrigin.y + 18 * density, paintText);
+            //canvas.drawLine(pOrigin.x + i * xShowOffset, pOrigin.y, pTop.x + i * xShowOffset, pTop.y, paintAxis);
+            canvas.drawText(dataList.get(i).xValue(),
+                    pOrigin.x + i * xShowOffset - paintText.measureText(dataList.get(i).xValue()) / 2,
+                    pOrigin.y + 18 * density, paintText);
         }
 
 
@@ -310,14 +312,11 @@ public class LineChart extends View {
 
         canvas.drawPoint(pOrigin.x + i * xDataOffset, getDataYvalue(dataMap.get(dataList.get(i).xValue())), paintLine);
 
-        canvas.drawLine(pOrigin.x + i * xDataOffset, pOrigin.y
-                , pOrigin.x + i * xDataOffset, getDataYvalue(dataMap.get(dataList.get(i).xValue())), paintLine);
+        //canvas.drawLine(pOrigin.x + i * xDataOffset, pOrigin.y, pOrigin.x + i * xDataOffset, getDataYvalue(dataMap.get(dataList.get(i).xValue())), paintLine);
 
         if (i >= 1) {
-
             canvas.drawLine(pOrigin.x + (i - 1) * xDataOffset, getDataYvalue(dataMap.get(dataList.get((i - 1)).xValue()))
                     , pOrigin.x + i * xDataOffset, getDataYvalue(dataMap.get(dataList.get(i).xValue())), paintLine);
-
         }
 
     }
