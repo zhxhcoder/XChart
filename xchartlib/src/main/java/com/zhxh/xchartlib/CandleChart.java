@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class StockCandleChart extends View implements GestureDetector.OnGestureListener {
+public class CandleChart extends View implements GestureDetector.OnGestureListener {
     /**
      * 坐标轴 原点 x点y点
      */
@@ -88,7 +88,7 @@ public class StockCandleChart extends View implements GestureDetector.OnGestureL
     GestureDetector detector;
     DisplayMetrics displayMetrics;
 
-    public StockCandleChart(Builder builder) {
+    public CandleChart(Builder builder) {
         super(builder.context);
         detector = new GestureDetector(builder.context, this);
 
@@ -262,8 +262,8 @@ public class StockCandleChart extends View implements GestureDetector.OnGestureL
 
             return this;
         }
-        public StockCandleChart build() {
-            return new StockCandleChart(this);
+        public CandleChart build() {
+            return new CandleChart(this);
         }
     }
 
