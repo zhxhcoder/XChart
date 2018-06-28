@@ -146,8 +146,8 @@ public class LineChart extends View {
         int axisColor = builder.axisColor;
         int textColor = builder.textColor;
         int lineColor = builder.lineColor;
-        float canvasHeight = builder.canvasHeight;
-        float canvasWidth = builder.canvasWidth;
+        int canvasHeight = builder.canvasHeight;
+        int canvasWidth = builder.canvasWidth;
 
         if (attrs != null) {
             TypedArray a = builder.context.obtainStyledAttributes(attrs, R.styleable.LineChart);
@@ -156,13 +156,17 @@ public class LineChart extends View {
             axisColor = a.getColor(R.styleable.LineChart_XaxisColor, axisColor);
             textColor = a.getColor(R.styleable.LineChart_XtextColor, textColor);
             lineColor = a.getColor(R.styleable.LineChart_XlineColor, lineColor);
-            canvasHeight = a.getDimensionPixelSize(R.styleable.LineChart_XcanvasHeight, (int) canvasHeight);
-            canvasWidth = a.getDimensionPixelSize(R.styleable.LineChart_XcanvasWidth, (int) canvasWidth);
+            canvasHeight = a.getDimensionPixelSize(R.styleable.LineChart_XcanvasHeight, canvasHeight);
+            canvasWidth = a.getDimensionPixelSize(R.styleable.LineChart_XcanvasWidth, canvasWidth);
             showXcount = a.getInt(R.styleable.LineChart_XshowXcount, showXcount);
             showYcount = a.getInt(R.styleable.LineChart_XshowYcount, showYcount);
             showYType = a.getInt(R.styleable.LineChart_XshowYType, showYType);
         }
 
+        //取到是数据为0 onSizeChanged中可以正确取到数据
+        //int[] xyArr = getDisplayViewSize(this);
+        //canvasWidth = xyArr[0];
+        //canvasHeight = xyArr[1];
 
         DisplayMetrics displayMetrics = builder.context.getResources().getDisplayMetrics();
 
@@ -200,6 +204,22 @@ public class LineChart extends View {
 
     }
 
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+    }
+
+    public int[] getDisplayViewSize(View view) {
+        int size[] = new int[2];
+        int width = View.MeasureSpec.makeMeasureSpec(0,
+                View.MeasureSpec.UNSPECIFIED);
+        int height = View.MeasureSpec.makeMeasureSpec(0,
+                View.MeasureSpec.UNSPECIFIED);
+        view.measure(width, height);
+        size[0] = view.getMeasuredWidth();
+        size[1] = view.getMeasuredHeight();
+        return size;
+    }
 
     public LineChart bindData(List<? extends IAxisValue> dataList) {
 
