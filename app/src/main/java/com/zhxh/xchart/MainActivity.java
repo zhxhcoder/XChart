@@ -35,6 +35,10 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+        lineChart1.setViewData(dataList1);
+
+
+
 
     }
 }

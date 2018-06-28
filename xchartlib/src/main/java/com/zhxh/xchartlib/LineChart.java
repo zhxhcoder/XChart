@@ -2,16 +2,20 @@ package com.zhxh.xchartlib;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.View;
 
+import com.zhxh.xchartlib.entity.AxisValue;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,8 +28,8 @@ public class LineChart extends View {
     private Map<String, Float> dataMap; //坐标轴里面的点
     private List<Float> yList; // Y轴上点  从小到大排列
 
-    private List<FundChartData> dataList;
-    private List<FundChartData> normalList;
+    private List<AxisValue> dataList;
+    private List<AxisValue> normalList;
     private int dataNum;
     private int xNum;
     private int yNum;
@@ -48,9 +52,6 @@ public class LineChart extends View {
     private PointF pOrigin;
     private PointF pRight;
     private PointF pTop;
-
-    private Bitmap bitmapTips;
-    private Bitmap bitmapDot;
 
     private float minY;
     private float maxY;
@@ -94,7 +95,6 @@ public class LineChart extends View {
 
         init(new Builder(context), attrs);
     }
-
 
     public static class Builder {
         //必需参数
@@ -202,7 +202,6 @@ public class LineChart extends View {
         paintGradient.setColor(lineColor);
         paintGradient.setStrokeWidth(1 * density);
 
-
         /**
          * 初始化数据
          */
@@ -219,12 +218,10 @@ public class LineChart extends View {
     }
 
 
-    public void setViewData(List<FundChartData> dataList, boolean isAnim) {
+    public void setViewData(List<AxisValue> dataList) {
 
-        this.isAnim = isAnim;
         this.dataList = dataList;
         dataNum = dataList.size();
-
 
         if (dataNum == 0) {
             return;
@@ -233,10 +230,10 @@ public class LineChart extends View {
         dataMap = new HashMap<String, Float>();
         yList = new ArrayList<Float>();
 
-        for (FundChartData data : dataList) {
+        for (AxisValue data : dataList) {
 
-            if (!CommonUtils.isNull(data.getDate()) && !CommonUtils.isNull(data.getValue()))
-                dataMap.put(data.getDate(), Float.valueOf(data.getValue()));
+            if (!TextUtils.isEmpty(data.xValue()) && !TextUtils.isEmpty(data.yValue()))
+                dataMap.put(data.xValue(), Float.valueOf(data.yValue()));
         }
 
         xNum = 7;
@@ -250,8 +247,6 @@ public class LineChart extends View {
             yList.add(minY + (i) * (maxY - minY) / (yNum - 1));
         }
 
-        bitmapTips = BitmapFactory.decodeResource(getResources(), R.drawable.fund_chart_bubble);
-        bitmapDot = BitmapFactory.decodeResource(getResources(), R.drawable.fund_chart_dot);
 
         invalidate();
     }
@@ -290,16 +285,11 @@ public class LineChart extends View {
 
         xOffset = 42f * density;
 
-        if (CommonDataManager.screenWight < 720) {
-            //小屏手机
-            xOffset = 37f * density;
-        }
-
         for (int i = 0; i < xNum; i++) {
 
             canvas.drawLine(pOrigin.x + i * xOffset, pOrigin.y, pTop.x + i * xOffset, pTop.y, paintLineGrey);
 
-            canvas.drawText(dataList.get(i).getDate(), pOrigin.x + i * xOffset - 5 * density, pOrigin.y + 18 * density, paintTextGrey);
+            canvas.drawText(dataList.get(i).xValue(), pOrigin.x + i * xOffset - 5 * density, pOrigin.y + 18 * density, paintTextGrey);
 
         }
 
@@ -343,14 +333,14 @@ public class LineChart extends View {
         return yValue;
     }
 
-    public float getMaxValue(List<FundChartData> dataList) {
+    public float getMaxValue(List<AxisValue> dataList) {
 
         float maxValue = 0;
 
-        for (FundChartData data : dataList) {
+        for (AxisValue data : dataList) {
 
-            if (Float.parseFloat(data.getValue()) >= maxValue) {
-                maxValue = Float.parseFloat(data.getValue());
+            if (Float.parseFloat(data.yValue()) >= maxValue) {
+                maxValue = Float.parseFloat(data.yValue());
             }
 
         }
@@ -359,14 +349,14 @@ public class LineChart extends View {
 
     }
 
-    public float getMinValue(List<FundChartData> dataList) {
+    public float getMinValue(List<AxisValue> dataList) {
 
-        float minValue = Float.parseFloat(dataList.get(0).getValue());
+        float minValue = Float.parseFloat(dataList.get(0).yValue());
 
-        for (FundChartData data : dataList) {
+        for (AxisValue data : dataList) {
 
-            if (Float.parseFloat(data.getValue()) <= minValue) {
-                minValue = Float.parseFloat(data.getValue());
+            if (Float.parseFloat(data.yValue()) <= minValue) {
+                minValue = Float.parseFloat(data.yValue());
             }
         }
 
@@ -376,35 +366,16 @@ public class LineChart extends View {
 
     private void drawItemData(int i) {
 
-        canvas.drawPoint(pOrigin.x + i * xOffset, getDataYvalue(dataMap.get(dataList.get(i).getDate())), paintLineBlue);
+        canvas.drawPoint(pOrigin.x + i * xOffset, getDataYvalue(dataMap.get(dataList.get(i).xValue())), paintLineBlue);
 
         canvas.drawLine(pOrigin.x + i * xOffset, pOrigin.y
-                , pOrigin.x + i * xOffset, getDataYvalue(dataMap.get(dataList.get(i).getDate())), paintGradient);
-
+                , pOrigin.x + i * xOffset, getDataYvalue(dataMap.get(dataList.get(i).xValue())), paintGradient);
 
         if (i >= 1) {
 
-            canvas.drawLine(pOrigin.x + (i - 1) * xOffset, getDataYvalue(dataMap.get(dataList.get((i - 1)).getDate()))
-                    , pOrigin.x + i * xOffset, getDataYvalue(dataMap.get(dataList.get(i).getDate())), paintLineBlue);
+            canvas.drawLine(pOrigin.x + (i - 1) * xOffset, getDataYvalue(dataMap.get(dataList.get((i - 1)).xValue()))
+                    , pOrigin.x + i * xOffset, getDataYvalue(dataMap.get(dataList.get(i).xValue())), paintLineBlue);
 
-        }
-
-        if (i == dataNum - 1) {
-
-            canvas.drawBitmap(bitmapDot,
-                    pOrigin.x + i * xOffset - bitmapDot.getWidth() / 2,
-                    getDataYvalue(dataMap.get(dataList.get(i).getDate())) - bitmapDot.getHeight() / 2,
-                    paintLineBlue);
-
-            canvas.drawBitmap(bitmapTips,
-                    pOrigin.x + i * xOffset - 35 * density,
-                    getDataYvalue(dataMap.get(dataList.get(i).getDate())) - 30 * density,
-                    paintLineBlue);
-
-            canvas.drawText(String.format("%.4f", Float.parseFloat(dataList.get(i).getValue()) / 1000),
-                    pOrigin.x + i * xOffset - 31 * density,
-                    getDataYvalue(dataMap.get(dataList.get(i).getDate())) - 28 * density + bitmapTips.getHeight() / 2,
-                    paintTextWhite);
         }
 
     }

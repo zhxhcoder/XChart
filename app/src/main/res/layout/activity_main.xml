@@ -8,8 +8,14 @@
 
     <com.zhxh.xchartlib.LineChart
         android:id="@+id/lineChart1"
-        android:layout_width="150dp"
-        android:layout_height="60dp"
+        android:layout_width="230dp"
+        android:layout_height="90dp"
+        app:XaxisColor="#FF2a4159"
+        app:XcanvasHeight="90dp"
+        app:XcanvasWidth="230dp"
+        app:XisAnim="false"
+        app:XlineColor="#FF2a4159"
+        app:XtextColor="#ff4c51"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
