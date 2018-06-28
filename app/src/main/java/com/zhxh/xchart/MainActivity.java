@@ -33,5 +33,8 @@ public class MainActivity extends AppCompatActivity {
         dataList1.add(new ChartData("05-10", "18.8"));
 
 
+
+
+
     }
 }
