@@ -10,7 +10,7 @@
         android:id="@+id/lineChart1"
         android:layout_width="230dp"
         android:layout_height="90dp"
-        app:XaxisColor="#FF2a4159"
+        app:XaxisColor="#414459"
         app:XcanvasHeight="90dp"
         app:XcanvasWidth="230dp"
         app:XisAnim="false"

@@ -27,7 +27,6 @@ public class LineChart extends View {
     private List<Float> yList; // Y轴上点  从小到大排列
 
     private List<? extends AxisValue> dataList;
-    private List<? extends AxisValue> normalList;
     private int dataNum;
     private int xNum;
     private int yNum;
@@ -55,15 +54,7 @@ public class LineChart extends View {
     private Canvas canvas;
 
 
-    /**************************自定义数据****************************/
-
-
     private boolean isAnim;
-    private int axisColor = 0xFFFFF0FF;
-    private int textColor = 0xFFF0FFFF;
-    private int lineColor = 0xFFFF0F0F;
-    private float canvasHeight;
-    private float canvasWidth;
 
 
     /**
@@ -145,11 +136,11 @@ public class LineChart extends View {
     private void init(Builder builder, AttributeSet attrs) {
 
         isAnim = builder.isAnim;
-        axisColor = builder.axisColor;
-        textColor = builder.textColor;
-        lineColor = builder.lineColor;
-        canvasHeight = builder.canvasHeight;
-        canvasWidth = builder.canvasWidth;
+        int axisColor = builder.axisColor;
+        int textColor = builder.textColor;
+        int lineColor = builder.lineColor;
+        float canvasHeight = builder.canvasHeight;
+        float canvasWidth = builder.canvasWidth;
 
         if (attrs != null) {
             TypedArray a = builder.context.obtainStyledAttributes(attrs, R.styleable.LineChart);
@@ -265,7 +256,6 @@ public class LineChart extends View {
         for (int i = 0; i < xNum; i++) {
             canvas.drawLine(pOrigin.x + i * xOffset, pOrigin.y, pTop.x + i * xOffset, pTop.y, paintAxis);
             canvas.drawText(dataList.get(i).xValue(), pOrigin.x + i * xOffset - 5 * density, pOrigin.y + 18 * density, paintText);
-
         }
 
 
