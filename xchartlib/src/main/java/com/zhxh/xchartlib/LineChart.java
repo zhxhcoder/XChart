@@ -3,7 +3,6 @@ package com.zhxh.xchartlib;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.support.annotation.Nullable;
@@ -37,13 +36,9 @@ public class LineChart extends View {
 
     private float density;
 
-    private Paint paintTextWhite;
-    private Paint paintTextGrey;
-    private Paint paintLineRed;
-    private Paint paintLineBlue;
-    private Paint paintLineGrey;
-    private Paint paintGradient;
-
+    private Paint paintText;
+    private Paint paintAxis;
+    private Paint paintLine;
 
     /**
      * 坐标轴 原点 x点y点
@@ -174,37 +169,25 @@ public class LineChart extends View {
         density = displayMetrics.density;
 
 
-        paintTextWhite = new Paint();
-        paintTextWhite.setAntiAlias(true);
-        paintTextWhite.setColor(Color.WHITE);
-        paintTextWhite.setStrokeWidth(5 * density);
-        paintTextWhite.setTextSize(10f * density);
+        paintText = new Paint();
+        paintText.setAntiAlias(true);
+        paintText.setColor(textColor);
+        paintText.setStrokeWidth(5 * density);
+        paintText.setTextSize(10f * density);
 
-        paintTextGrey = new Paint();
-        paintTextGrey.setAntiAlias(true);
-        paintTextGrey.setColor(textColor);
-        paintTextGrey.setStrokeWidth(2 * density);
-        paintTextGrey.setTextSize(10f * density);
+        paintAxis = new Paint();
+        paintAxis.setAntiAlias(true);
+        paintAxis.setColor(axisColor);
+        paintAxis.setStrokeWidth(1 * density);
 
-        paintLineBlue = new Paint();
-        paintLineBlue.setAntiAlias(true);
-        paintLineBlue.setColor(lineColor);
-        paintLineBlue.setStrokeWidth(2 * density);
-
-        paintLineGrey = new Paint();
-        paintLineGrey.setAntiAlias(true);
-        paintLineGrey.setColor(lineColor);
-        paintLineGrey.setStrokeWidth(1 * density);
-
-        paintGradient = new Paint();
-        paintGradient.setAntiAlias(true);
-        paintGradient.setColor(lineColor);
-        paintGradient.setStrokeWidth(1 * density);
+        paintLine = new Paint();
+        paintLine.setAntiAlias(true);
+        paintLine.setColor(lineColor);
+        paintLine.setStrokeWidth(0.5f * density);
 
         /**
          * 初始化数据
          */
-
         pOrigin = new PointF();
         pRight = new PointF();
         pTop = new PointF();
@@ -212,7 +195,6 @@ public class LineChart extends View {
         pOrigin.set(canvasWidth * 0.19f, canvasHeight * 0.8f);
         pRight.set(canvasWidth * 0.9f, canvasHeight * 0.8f);
         pTop.set(canvasWidth * 0.19f, canvasHeight * 0.1f);
-
 
     }
 
@@ -268,35 +250,26 @@ public class LineChart extends View {
             canvas.drawLine(pOrigin.x,
                     pOrigin.y - i * yOffset,
                     pRight.x,
-                    pRight.y - i * yOffset, paintLineGrey);
-
-            canvas.drawText(String.format("%.4f", yList.get(i) / 1000),
+                    pRight.y - i * yOffset, paintAxis);
+            canvas.drawText(String.format("%.2f", yList.get(i)),
                     pOrigin.x - 45 * density,
                     pOrigin.y - i * yOffset + 3 * density,
-                    paintTextGrey);
+                    paintText);
 
         }
-
 
         /**
          * 画坐标竖线 以及x轴下面的日期 从左往右
          */
-
         xOffset = 42f * density;
-
         for (int i = 0; i < xNum; i++) {
-
-            canvas.drawLine(pOrigin.x + i * xOffset, pOrigin.y, pTop.x + i * xOffset, pTop.y, paintLineGrey);
-
-            canvas.drawText(dataList.get(i).xValue(), pOrigin.x + i * xOffset - 5 * density, pOrigin.y + 18 * density, paintTextGrey);
+            canvas.drawLine(pOrigin.x + i * xOffset, pOrigin.y, pTop.x + i * xOffset, pTop.y, paintAxis);
+            canvas.drawText(dataList.get(i).xValue(), pOrigin.x + i * xOffset - 5 * density, pOrigin.y + 18 * density, paintText);
 
         }
 
 
         /*************************************************************************/
-        /**
-         * 点 已经 线
-         */
 
         if (isAnim) {
             for (int i = 0; i < progress; i++) {
@@ -365,15 +338,15 @@ public class LineChart extends View {
 
     private void drawItemData(int i) {
 
-        canvas.drawPoint(pOrigin.x + i * xOffset, getDataYvalue(dataMap.get(dataList.get(i).xValue())), paintLineBlue);
+        canvas.drawPoint(pOrigin.x + i * xOffset, getDataYvalue(dataMap.get(dataList.get(i).xValue())), paintLine);
 
         canvas.drawLine(pOrigin.x + i * xOffset, pOrigin.y
-                , pOrigin.x + i * xOffset, getDataYvalue(dataMap.get(dataList.get(i).xValue())), paintGradient);
+                , pOrigin.x + i * xOffset, getDataYvalue(dataMap.get(dataList.get(i).xValue())), paintLine);
 
         if (i >= 1) {
 
             canvas.drawLine(pOrigin.x + (i - 1) * xOffset, getDataYvalue(dataMap.get(dataList.get((i - 1)).xValue()))
-                    , pOrigin.x + i * xOffset, getDataYvalue(dataMap.get(dataList.get(i).xValue())), paintLineBlue);
+                    , pOrigin.x + i * xOffset, getDataYvalue(dataMap.get(dataList.get(i).xValue())), paintLine);
 
         }
 
