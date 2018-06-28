@@ -3,8 +3,11 @@ package com.zhxh.xchartlib;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.PointF;
+import android.graphics.Shader;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -57,6 +60,9 @@ public class LineChart extends View {
 
     private int showYType;
 
+    Path shaderPath = new Path();
+    Paint paintShader;
+
     /**
      * 既可以在xml中配置也可以直接代码生成
      *
@@ -90,6 +96,8 @@ public class LineChart extends View {
         int axisColor;
         int textColor;
         int lineColor;
+        int shaderStartColor;
+        int shaderEndColor;
         int canvasHeight;
         int canvasWidth;
         int showYType;
@@ -133,6 +141,16 @@ public class LineChart extends View {
             return this;
         }
 
+        public Builder shaderStartColor(int shaderStartColor) {
+            this.shaderStartColor = shaderStartColor;
+            return this;
+        }
+
+        public Builder shaderEndColor(int shaderEndColor) {
+            this.shaderEndColor = shaderEndColor;
+            return this;
+        }
+
         public LineChart build() {
             return new LineChart(this);
         }
@@ -146,6 +164,8 @@ public class LineChart extends View {
         int axisColor = builder.axisColor;
         int textColor = builder.textColor;
         int lineColor = builder.lineColor;
+        int shaderStartColor = builder.shaderStartColor;
+        int shaderEndColor = builder.shaderEndColor;
         int canvasHeight = builder.canvasHeight;
         int canvasWidth = builder.canvasWidth;
 
@@ -156,6 +176,8 @@ public class LineChart extends View {
             axisColor = a.getColor(R.styleable.LineChart_XaxisColor, axisColor);
             textColor = a.getColor(R.styleable.LineChart_XtextColor, textColor);
             lineColor = a.getColor(R.styleable.LineChart_XlineColor, lineColor);
+            shaderStartColor = a.getColor(R.styleable.LineChart_XshaderStartColor, shaderStartColor);
+            shaderEndColor = a.getColor(R.styleable.LineChart_XshaderEndColor, shaderEndColor);
             canvasHeight = a.getDimensionPixelSize(R.styleable.LineChart_XcanvasHeight, canvasHeight);
             canvasWidth = a.getDimensionPixelSize(R.styleable.LineChart_XcanvasWidth, canvasWidth);
             showXcount = a.getInt(R.styleable.LineChart_XshowXcount, showXcount);
@@ -182,6 +204,16 @@ public class LineChart extends View {
         paintAxis.setAntiAlias(true);
         paintAxis.setColor(axisColor);
         paintAxis.setStrokeWidth(0.5f * density);
+
+        paintShader = new Paint();
+        Shader mShader = new LinearGradient(0, 0, 40, 60,
+                new int[]{shaderStartColor, shaderEndColor},
+                null,
+                Shader.TileMode.CLAMP);
+        paintShader.setShader(mShader);
+        paintShader.setStyle(Paint.Style.FILL);
+        paintShader.setAntiAlias(true);
+
 
         paintLine = new Paint();
         paintLine.setAntiAlias(true);
@@ -361,7 +393,21 @@ public class LineChart extends View {
         return minValue;
     }
 
+
     private void drawItemData(int i) {
+
+        if (i == 0) {
+            shaderPath.moveTo(pOrigin.x, pOrigin.y);
+            shaderPath.lineTo(pOrigin.x + i * xDataOffset, getDataYvalue(dataMap.get(dataList.get(i).xValue())));
+        } else if (i == dataNum - 1) {
+            shaderPath.lineTo(pOrigin.x + i * xDataOffset, getDataYvalue(dataMap.get(dataList.get(i).xValue())));
+            shaderPath.lineTo(pRight.x, pRight.y);
+            shaderPath.close();
+            canvas.drawPath(shaderPath, paintShader);
+        } else {
+            shaderPath.lineTo(pOrigin.x + i * xDataOffset, getDataYvalue(dataMap.get(dataList.get(i).xValue())));
+        }
+
 
         canvas.drawPoint(pOrigin.x + i * xDataOffset, getDataYvalue(dataMap.get(dataList.get(i).xValue())), paintLine);
 
