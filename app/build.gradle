@@ -34,5 +34,5 @@ dependencies {
     implementation 'com.android.support:design:27.1.1'
     implementation project(':xchartlib')
     //implementation(name: 'xchart', ext: 'aar')
-    //implementation 'com.zhxh:xchartlib:2.1'
+    //implementation 'com.zhxh:xchartlib:2.2'
 }
