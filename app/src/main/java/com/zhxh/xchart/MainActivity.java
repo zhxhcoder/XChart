@@ -39,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
         lineChart1.show();
 
         lineChart2.bindData(dataList1);
+        lineChart2.bindYUnit("万");
+        lineChart2.bindYFormat("%.1f");
         lineChart2.show();
 
         lineChart3.bindData(dataList1);
