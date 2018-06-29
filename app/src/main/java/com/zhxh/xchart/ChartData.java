@@ -37,7 +37,12 @@ public class ChartData implements IAxisValue {
     }
 
     @Override
-    public String yValue() {
-        return getValue();
+    public float yValue() {
+        return Float.parseFloat(getValue());
+    }
+
+    @Override
+    public int flagValue() {
+        return 0;
     }
 }

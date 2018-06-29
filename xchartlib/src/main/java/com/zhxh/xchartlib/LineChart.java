@@ -63,6 +63,9 @@ public class LineChart extends View {
     Path shaderPath = new Path();
     Paint paintShader;
 
+    String yUnit = "";
+    String yFormat = "%.2f";
+
     /**
      * 既可以在xml中配置也可以直接代码生成
      *
@@ -267,8 +270,8 @@ public class LineChart extends View {
 
         for (IAxisValue data : dataList) {
 
-            if (!TextUtils.isEmpty(data.xValue()) && !TextUtils.isEmpty(data.yValue()))
-                dataMap.put(data.xValue(), Float.valueOf(data.yValue()));
+            if (!TextUtils.isEmpty(data.xValue()))
+                dataMap.put(data.xValue(), data.yValue());
         }
 
         minY = getMinValue(dataList);
@@ -280,6 +283,17 @@ public class LineChart extends View {
             yList.add(minY + (i) * (maxY - minY) / (showYcount - 1));
         }
 
+        return this;
+    }
+
+
+    public LineChart bindYUnit(String yUnit) {
+        this.yUnit = yUnit;
+        return this;
+    }
+
+    public LineChart bindYFormat(String yFormat) {
+        this.yFormat = yFormat;
         return this;
     }
 
@@ -308,8 +322,9 @@ public class LineChart extends View {
                     pRight.y - i * yOffset, paintAxis);
 
             if (showYType == 1) {
-                canvas.drawText(String.format("%.2f", yList.get(i)),
-                        pOrigin.x - paintText.measureText(String.format("%.2f", yList.get(i))) - 8 * density,
+                String strY = String.format(yFormat, yList.get(i)) + yUnit;
+                canvas.drawText(strY,
+                        pOrigin.x - paintText.measureText(strY) - 8 * density,
                         pOrigin.y - i * yOffset + 3 * density,
                         paintText);
             }
@@ -323,17 +338,19 @@ public class LineChart extends View {
         float xShowOffset = (pRight.x - pOrigin.x) / (showXcount - 1);
         for (int i = 0; i < showXcount; i++) {
             //canvas.drawLine(pOrigin.x + i * xShowOffset, pOrigin.y, pTop.x + i * xShowOffset, pTop.y, paintAxis);
+            String strX = dataList.get(i).xValue();
+
             if (i == 0) {
-                canvas.drawText(dataList.get(i).xValue(),
+                canvas.drawText(strX,
                         pOrigin.x + i * xShowOffset,
                         pOrigin.y + 18 * density, paintText);
             } else if (i == showXcount - 1) {
-                canvas.drawText(dataList.get(i).xValue(),
-                        pOrigin.x + i * xShowOffset - paintText.measureText(dataList.get(i).xValue()),
+                canvas.drawText(strX,
+                        pOrigin.x + i * xShowOffset - paintText.measureText(strX),
                         pOrigin.y + 18 * density, paintText);
             } else {
-                canvas.drawText(dataList.get(i).xValue(),
-                        pOrigin.x + i * xShowOffset - paintText.measureText(dataList.get(i).xValue()) / 2,
+                canvas.drawText(strX,
+                        pOrigin.x + i * xShowOffset - paintText.measureText(strX) / 2,
                         pOrigin.y + 18 * density, paintText);
             }
         }
@@ -375,18 +392,18 @@ public class LineChart extends View {
     public float getMaxValue(List<? extends IAxisValue> dataList) {
         float maxValue = 0;
         for (IAxisValue data : dataList) {
-            if (Float.parseFloat(data.yValue()) >= maxValue) {
-                maxValue = Float.parseFloat(data.yValue());
+            if (data.yValue() >= maxValue) {
+                maxValue = data.yValue();
             }
         }
         return maxValue;
     }
 
     public float getMinValue(List<? extends IAxisValue> dataList) {
-        float minValue = Float.parseFloat(dataList.get(0).yValue());
+        float minValue = dataList.get(0).yValue();
         for (IAxisValue data : dataList) {
-            if (Float.parseFloat(data.yValue()) <= minValue) {
-                minValue = Float.parseFloat(data.yValue());
+            if (data.yValue() <= minValue) {
+                minValue = data.yValue();
             }
         }
         return minValue;
@@ -395,26 +412,28 @@ public class LineChart extends View {
 
     private void drawItemData(int i) {
 
+        String strX = dataList.get(i).xValue();
+
         if (i == 0) {
             shaderPath.moveTo(pOrigin.x, pOrigin.y);
-            shaderPath.lineTo(pOrigin.x + i * xDataOffset, getDataYvalue(dataMap.get(dataList.get(i).xValue())));
+            shaderPath.lineTo(pOrigin.x + i * xDataOffset, getDataYvalue(dataMap.get(strX)));
         } else if (i == dataNum - 1) {
-            shaderPath.lineTo(pOrigin.x + i * xDataOffset, getDataYvalue(dataMap.get(dataList.get(i).xValue())));
+            shaderPath.lineTo(pOrigin.x + i * xDataOffset, getDataYvalue(dataMap.get(strX)));
             shaderPath.lineTo(pRight.x, pRight.y);
             shaderPath.close();
             canvas.drawPath(shaderPath, paintShader);
         } else {
-            shaderPath.lineTo(pOrigin.x + i * xDataOffset, getDataYvalue(dataMap.get(dataList.get(i).xValue())));
+            shaderPath.lineTo(pOrigin.x + i * xDataOffset, getDataYvalue(dataMap.get(strX)));
         }
 
 
-        canvas.drawPoint(pOrigin.x + i * xDataOffset, getDataYvalue(dataMap.get(dataList.get(i).xValue())), paintLine);
+        canvas.drawPoint(pOrigin.x + i * xDataOffset, getDataYvalue(dataMap.get(strX)), paintLine);
 
-        //canvas.drawLine(pOrigin.x + i * xDataOffset, pOrigin.y, pOrigin.x + i * xDataOffset, getDataYvalue(dataMap.get(dataList.get(i).xValue())), paintLine);
+        //canvas.drawLine(pOrigin.x + i * xDataOffset, pOrigin.y, pOrigin.x + i * xDataOffset, getDataYvalue(dataMap.get(strX)), paintLine);
 
         if (i >= 1) {
             canvas.drawLine(pOrigin.x + (i - 1) * xDataOffset, getDataYvalue(dataMap.get(dataList.get((i - 1)).xValue()))
-                    , pOrigin.x + i * xDataOffset, getDataYvalue(dataMap.get(dataList.get(i).xValue())), paintLine);
+                    , pOrigin.x + i * xDataOffset, getDataYvalue(dataMap.get(strX)), paintLine);
         }
 
     }
