@@ -135,6 +135,16 @@ app:XisAnim="false"
         app:XshaderEndColor="#70ff4c51"
         app:XshaderStartColor="#00ff4c51"
 ~~~
+## Version 2.2 发布说明
+
+y轴上数值单位与格式配置
+
+~~~
+        lineChart2.bindData(dataList1);
+        lineChart2.bindYUnit("万");
+        lineChart2.bindYFormat("%.1f");
+        lineChart2.show();
+~~~
 
 ## Version 2.2 计划
 
