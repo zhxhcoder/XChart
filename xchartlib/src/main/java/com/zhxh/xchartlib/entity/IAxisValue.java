@@ -7,6 +7,8 @@ public interface IAxisValue {
 
     String xValue();
 
-    String yValue();
+    float yValue();
+
+    int flagValue();
 
 }
