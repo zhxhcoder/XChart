@@ -146,7 +146,7 @@ y轴上数值单位与格式配置
         lineChart2.show();
 ~~~
 
-## Version 2.2 计划
+## Version 2.3 计划
 
 待定
 
