@@ -2,27 +2,48 @@
 XChart, 自定义可灵活配置的图表库
 
 
-## LineChart效果
+# 控件源码
+先上代码：https://github.com/zhxhcoder/XChart
 
-![](https://github.com/zhxhcoder/XChart/blob/master/screenshots/linechart.png)
-
-## LinChart引用
-
+# 通过Maven或Gradle引用
 ~~~
 <dependency>
   <groupId>com.zhxh</groupId>
   <artifactId>xchartlib</artifactId>
-  <version>2.2</version>
+  <version>2.3</version>
+  <type>pom</type>
+</dependency>
+~~~
+
+~~~
+compile 'com.zhxh:xchartlib:2.3'
+~~~
+
+# XChart介绍-LineChart, BarChart,RadarChart,CandleChart,PieChart,AreaChart,SurfaceChart
+
+![](https://github.com/zhxhcoder/XChart/blob/master/screenshots/linechart.png)
+
+其中的折线图图表
+
+
+### LinChart介绍
+
+##### 1引用
+~~~
+<dependency>
+  <groupId>com.zhxh</groupId>
+  <artifactId>xchartlib</artifactId>
+  <version>2.3</version>
   <type>pom</type>
 </dependency>
 ~~~
 或
 ~~~
-implementation 'com.zhxh:xchartlib:2.2'
-api 'com.zhxh:xchartlib:2.2'
+implementation 'com.zhxh:xchartlib:2.3'
+api 'com.zhxh:xchartlib:2.3'
 ~~~
 
-## LineChart配置
+##### 2配置
 ~~~
 
     <com.zhxh.xchartlib.LineChart
@@ -85,16 +106,13 @@ api 'com.zhxh:xchartlib:2.2'
 
 ~~~
 
-## Version 1.3 发布说明
+# Version 1.3 发布说明
 
 加上了动画效果，动态展示折线绘制过程
 
 ~~~
 app:XisAnim="false"
 ~~~
-
-
-## Version 1.3 发布说明
 
 加上了x轴数量的显示，并单独对首项和末项处理文字显示位置
 
@@ -117,8 +135,25 @@ app:XisAnim="false"
             }
         }
 ~~~
+### BarChart引用
+待补充
 
-## Version 1.4 发布说明
+### CandleChart引用
+待补充
+
+### PieChart引用
+待补充
+
+### RadarChart引用
+待补充
+
+### AreaChart引用
+待补充
+
+### SurfaceChart引用
+待补充
+
+# Version 1.4 发布说明
 
 加上了可配置y轴数据的位置的地方
 
@@ -127,7 +162,7 @@ app:XisAnim="false"
         app:XshowYcount="6"
 ~~~
 
-## Version 2.1 发布说明
+# Version 2.1 发布说明
 
 加上了设置shader效果
 
@@ -135,7 +170,7 @@ app:XisAnim="false"
         app:XshaderEndColor="#70ff4c51"
         app:XshaderStartColor="#00ff4c51"
 ~~~
-## Version 2.2 发布说明
+# Version 2.2 发布说明
 
 y轴上数值单位与格式配置
 
@@ -146,14 +181,14 @@ y轴上数值单位与格式配置
         lineChart2.show();
 ~~~
 
-## Version 2.3 计划
+# 下版本计划
 
 待定
 
 
 
 
-## 开源协议
+# 开源协议
 
  > Copyright (C) 2018, zhxh
  >
