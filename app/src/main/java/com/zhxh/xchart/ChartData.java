@@ -1,5 +1,6 @@
 package com.zhxh.xchart;
 
+import com.google.gson.annotations.SerializedName;
 import com.zhxh.xchartlib.entity.IAxisValue;
 
 /**
@@ -7,7 +8,9 @@ import com.zhxh.xchartlib.entity.IAxisValue;
  */
 public class ChartData implements IAxisValue {
 
+    @SerializedName(value = "date", alternate = {"logDay"})
     private String date;
+    @SerializedName(value = "value", alternate = {"yield"})
     private String value;
 
     public ChartData(String date, String value) {
