@@ -9,7 +9,6 @@ import android.graphics.Path;
 import android.graphics.PointF;
 import android.graphics.Shader;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -17,16 +16,13 @@ import android.view.View;
 import com.zhxh.xchartlib.entity.IAxisValue;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by zhxh on 2018/5/28
  */
 public class LineChart extends View {
 
-    private Map<String, Float> dataMap; //坐标轴里面的点
     private List<Float> yList; // Y轴上点  从小到大排列
 
     private List<? extends IAxisValue> dataList;
@@ -274,14 +270,7 @@ public class LineChart extends View {
             return this;
         }
 
-        dataMap = new HashMap<String, Float>();
         yList = new ArrayList<Float>();
-
-        for (IAxisValue data : dataList) {
-
-            if (!TextUtils.isEmpty(data.xValue()))
-                dataMap.put(data.xValue(), data.yValue());
-        }
 
         minY = getMinValue(dataList);
         maxY = getMaxValue(dataList);
@@ -421,28 +410,30 @@ public class LineChart extends View {
 
     private void drawItemData(int i) {
 
-        String strX = dataList.get(i).xValue();
+        IAxisValue item = dataList.get(i);
 
         if (i == 0) {
             shaderPath.moveTo(pOrigin.x, pOrigin.y);
-            shaderPath.lineTo(pOrigin.x + i * xDataOffset, getDataYvalue(dataMap.get(strX)));
+            shaderPath.lineTo(pOrigin.x + i * xDataOffset, getDataYvalue(item.yValue()));
         } else if (i == dataNum - 1) {
-            shaderPath.lineTo(pOrigin.x + i * xDataOffset, getDataYvalue(dataMap.get(strX)));
+            shaderPath.lineTo(pOrigin.x + i * xDataOffset, getDataYvalue(item.yValue()));
             shaderPath.lineTo(pRight.x, pRight.y);
             shaderPath.close();
             canvas.drawPath(shaderPath, paintShader);
         } else {
-            shaderPath.lineTo(pOrigin.x + i * xDataOffset, getDataYvalue(dataMap.get(strX)));
+            shaderPath.lineTo(pOrigin.x + i * xDataOffset, getDataYvalue(item.yValue()));
         }
 
 
-        canvas.drawPoint(pOrigin.x + i * xDataOffset, getDataYvalue(dataMap.get(strX)), paintLine);
+        canvas.drawPoint(pOrigin.x + i * xDataOffset, getDataYvalue(item.yValue()), paintLine);
 
-        //canvas.drawLine(pOrigin.x + i * xDataOffset, pOrigin.y, pOrigin.x + i * xDataOffset, getDataYvalue(dataMap.get(strX)), paintLine);
+        //canvas.drawLine(pOrigin.x + i * xDataOffset, pOrigin.y, pOrigin.x + i * xDataOffset, getDataYvalue(item.yValue()), paintLine);
 
         if (i >= 1) {
-            canvas.drawLine(pOrigin.x + (i - 1) * xDataOffset, getDataYvalue(dataMap.get(dataList.get((i - 1)).xValue()))
-                    , pOrigin.x + i * xDataOffset, getDataYvalue(dataMap.get(strX)), paintLine);
+            IAxisValue item0 = dataList.get(i - 1);
+
+            canvas.drawLine(pOrigin.x + (i - 1) * xDataOffset, getDataYvalue(item0.yValue())
+                    , pOrigin.x + i * xDataOffset, getDataYvalue(item.yValue()), paintLine);
         }
 
     }
