@@ -229,8 +229,19 @@ public class LineChart extends View {
             pOrigin.set(0, canvasHeight);
             pRight.set(canvasWidth, canvasHeight);
             pTop.set(0, 0);
+        } else if (showXcount == 0 && showYcount > 0) {
+            pOrigin.set(canvasWidth * 0.1f, canvasHeight);
+            pRight.set(canvasWidth * 0.9f, canvasHeight);
+            pTop.set(canvasWidth * 0.1f, 0);
+        } else if (showXcount > 0 && showYcount == 0) {
+            pOrigin.set(0, canvasHeight * 0.8f);
+            pRight.set(canvasWidth, canvasHeight * 0.8f);
+            pTop.set(0, canvasHeight * 0.1f);
+        } else {
+            pOrigin.set(canvasWidth * 0.1f, canvasHeight * 0.8f);
+            pRight.set(canvasWidth * 0.9f, canvasHeight * 0.8f);
+            pTop.set(canvasWidth * 0.1f, canvasHeight * 0.1f);
         }
-
     }
 
     @Override
