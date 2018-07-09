@@ -227,7 +227,16 @@ public class LineChart extends View {
         pRight = new PointF();
         pTop = new PointF();
 
-        if (showYType == 1) {
+
+        if (showXcount == 0 && showYcount == 0) {
+            pOrigin.set(0, canvasHeight);
+            pRight.set(canvasWidth, canvasHeight);
+            pTop.set(0, 0);
+        } else if (showXcount == 0 && showYcount > 0) {
+            pOrigin.set(0, canvasHeight);
+            pRight.set(canvasWidth, canvasHeight);
+            pTop.set(0, 0);
+        } else if (showYType == 1) {
             pOrigin.set(canvasWidth * 0.19f, canvasHeight * 0.8f);
             pRight.set(canvasWidth * 0.9f, canvasHeight * 0.8f);
             pTop.set(canvasWidth * 0.19f, canvasHeight * 0.1f);

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    LineChart lineChart0;
     LineChart lineChart1;
     LineChart lineChart2;
     LineChart lineChart3;
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        lineChart0 = findViewById(R.id.lineChart0);
         lineChart1 = findViewById(R.id.lineChart1);
         lineChart2 = findViewById(R.id.lineChart2);
         lineChart3 = findViewById(R.id.lineChart3);
@@ -45,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
         dataList1.add(new ChartData("05-09", "947.24"));
         dataList1.add(new ChartData("05-10", "1324.60"));
 
+        lineChart0.bindData(testDatas);
+        lineChart0.show();
         lineChart1.bindData(testDatas);
         lineChart1.show();
 
