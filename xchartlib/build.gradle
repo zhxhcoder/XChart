@@ -8,8 +8,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 27
-        versionCode 8
-        versionName "2.3"
+        versionCode 9
+        versionName "2.5"
     }
 
     buildTypes {
@@ -68,7 +68,7 @@ def gitUrl = 'https://github.com/zhxhcoder/XChart.git'   //github仓库的地址
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
-version = "2.3"//version
+version = "2.5"//version
 group = "com.zhxh"//groupId
 bintray {
     user = properties.getProperty("bintray.user")
@@ -83,10 +83,10 @@ bintray {
         publish = true // 是否是公开项目。
 
         version {
-            name = '2.3'//版本号
-            desc = 'A extent Button with more customized feature'//版本描述
+            name = '2.5'//版本号
+            desc = 'extent chart with more customized feature'//版本描述
             released = new Date()
-            vcsTag = 'v2.3'
+            vcsTag = 'v2.5'
             attributes = ['gradle-plugin': 'com.use.less:com.use.less.gradle:gradle-useless-plugin']
         }
     }
@@ -98,7 +98,7 @@ install {
             project {
                 packaging 'aar'
                 //项目描述
-                description 'A extent Button with more customized feature'
+                description 'extent chart with more customized feature'
                 url siteUrl
                 // 填写开源协议
                 licenses {
