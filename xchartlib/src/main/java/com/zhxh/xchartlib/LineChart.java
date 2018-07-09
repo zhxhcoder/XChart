@@ -54,13 +54,15 @@ public class LineChart extends View {
     private int showXcount;
     private int showYcount;
 
-    private int showYType;
+    private int showType;
 
     Path shaderPath = new Path();
     Paint paintShader;
 
     String yUnit = "";
     String yFormat = "%.2f";
+
+    boolean isBlank;
 
     /**
      * 既可以在xml中配置也可以直接代码生成
@@ -99,7 +101,7 @@ public class LineChart extends View {
         int shaderEndColor;
         int canvasHeight;
         int canvasWidth;
-        int showYType;
+        int showType;
 
         public Builder(Context context) {
             this.context = context;
@@ -135,8 +137,8 @@ public class LineChart extends View {
             return this;
         }
 
-        public Builder showYType(int showYType) {
-            this.showYType = showYType;
+        public Builder showType(int showType) {
+            this.showType = showType;
             return this;
         }
 
@@ -159,7 +161,7 @@ public class LineChart extends View {
     private void init(Builder builder, AttributeSet attrs) {
 
         isAnim = builder.isAnim;
-        showYType = builder.showYType;
+        showType = builder.showType;
         int axisColor = builder.axisColor;
         int textColor = builder.textColor;
         int lineColor = builder.lineColor;
@@ -181,7 +183,7 @@ public class LineChart extends View {
             canvasWidth = a.getDimensionPixelSize(R.styleable.LineChart_XcanvasWidth, canvasWidth);
             showXcount = a.getInt(R.styleable.LineChart_XshowXcount, showXcount);
             showYcount = a.getInt(R.styleable.LineChart_XshowYcount, showYcount);
-            showYType = a.getInt(R.styleable.LineChart_XshowYType, showYType);
+            showType = a.getInt(R.styleable.LineChart_XshowType, showType);
         }
 
         //取到是数据为0 onSizeChanged中可以正确取到数据
@@ -223,23 +225,10 @@ public class LineChart extends View {
         pRight = new PointF();
         pTop = new PointF();
 
-
         if (showXcount == 0 && showYcount == 0) {
             pOrigin.set(0, canvasHeight);
             pRight.set(canvasWidth, canvasHeight);
             pTop.set(0, 0);
-        } else if (showXcount == 0 && showYcount > 0) {
-            pOrigin.set(0, canvasHeight);
-            pRight.set(canvasWidth, canvasHeight);
-            pTop.set(0, 0);
-        } else if (showYType == 1) {
-            pOrigin.set(canvasWidth * 0.19f, canvasHeight * 0.8f);
-            pRight.set(canvasWidth * 0.9f, canvasHeight * 0.8f);
-            pTop.set(canvasWidth * 0.19f, canvasHeight * 0.1f);
-        } else {
-            pOrigin.set(canvasWidth * 0.1f, canvasHeight * 0.8f);
-            pRight.set(canvasWidth * 0.9f, canvasHeight * 0.8f);
-            pTop.set(canvasWidth * 0.1f, canvasHeight * 0.1f);
         }
 
     }
@@ -262,6 +251,12 @@ public class LineChart extends View {
     }
 
     public LineChart bindData(List<? extends IAxisValue> dataList) {
+
+        if (dataList == null || dataList.size() == 0) {
+            isBlank = true;
+            dataNum = 0;
+            return this;
+        }
 
         this.dataList = dataList;
         dataNum = dataList.size();
@@ -302,6 +297,10 @@ public class LineChart extends View {
     @Override
     protected void onDraw(Canvas canvas) {
 
+        if (isBlank) {
+            return;
+        }
+
         if (dataNum == 0) {
             return;
         }
@@ -319,7 +318,7 @@ public class LineChart extends View {
                     pRight.x,
                     pRight.y - i * yOffset, paintAxis);
 
-            if (showYType == 1) {
+            if (showType == 1) {
                 String strY = String.format(yFormat, yList.get(i)) + yUnit;
                 canvas.drawText(strY,
                         pOrigin.x - paintText.measureText(strY) - 8 * density,
