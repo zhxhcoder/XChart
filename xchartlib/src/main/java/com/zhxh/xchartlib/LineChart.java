@@ -207,7 +207,7 @@ public class LineChart extends View {
         paintAxis.setStrokeWidth(0.5f * density);
 
         paintShader = new Paint();
-        Shader mShader = new LinearGradient(0, 0, 40, 60,
+        Shader mShader = new LinearGradient(canvasWidth, canvasHeight, canvasWidth, 0,
                 new int[]{shaderStartColor, shaderEndColor},
                 null,
                 Shader.TileMode.CLAMP);
