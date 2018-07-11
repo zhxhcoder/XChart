@@ -46,11 +46,10 @@ public class LineChart extends View {
     private float minY;
     private float maxY;
 
-    private long intervals = 87;
     private float xDataOffset;
     private Canvas canvas;
 
-    private long animTime;
+    private long animTime = 1500;
     private boolean isAnim;
     private int showXcount;
     private int showYcount;
@@ -207,7 +206,6 @@ public class LineChart extends View {
         paintAxis.setStrokeWidth(0.5f * density);
 
         paintShader = new Paint();
-        paintShader = new Paint();
         Shader mShader = new LinearGradient(canvasWidth, canvasHeight, canvasWidth, 0,
                 new int[]{shaderStartColor, shaderEndColor},
                 null,
@@ -215,7 +213,6 @@ public class LineChart extends View {
         paintShader.setShader(mShader);
         paintShader.setStyle(Paint.Style.FILL);
         paintShader.setAntiAlias(true);
-
 
         paintLine = new Paint();
         paintLine.setAntiAlias(true);
@@ -372,7 +369,7 @@ public class LineChart extends View {
         xDataOffset = (pRight.x - pOrigin.x) / (dataNum - 1);
 
         if (isAnim) {
-            intervals = animTime / dataNum;
+            long intervals = animTime / dataNum;
             for (int i = 0; i < progress; i++) {
                 drawItemData(i);
             }
