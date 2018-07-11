@@ -1,6 +1,7 @@
 package com.zhxh.xchart;
 
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -26,6 +27,7 @@ public class TabActivity extends AppCompatActivity implements ItemFragment.OnLis
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    private TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +41,16 @@ public class TabActivity extends AppCompatActivity implements ItemFragment.OnLis
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        tabLayout = findViewById(R.id.tabLayout);
+        mViewPager = findViewById(R.id.mViewPager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        for (int i = 0; i < 5; i++) {
+            tabLayout.addTab(tabLayout.newTab().setText("收益榜" + i));
+        }
+
+
+        tabLayout.setupWithViewPager(mViewPager);
 
     }
 
