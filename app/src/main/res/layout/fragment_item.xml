@@ -25,7 +25,7 @@
         app:XcanvasWidth="88dp"
         app:XisAnim="false"
         app:XlineColor="#ff4c51"
-        app:XshaderEndColor="#00ff4c51"
+        app:XshaderEndColor="#70ff4c51"
         app:XshaderStartColor="#70ff4c51"
         app:XshowXcount="0"
         app:XshowYcount="0"
