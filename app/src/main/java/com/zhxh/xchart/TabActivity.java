@@ -43,7 +43,9 @@ public class TabActivity extends AppCompatActivity implements ItemFragment.OnLis
         // Set up the ViewPager with the sections adapter.
         tabLayout = findViewById(R.id.tabLayout);
         mViewPager = findViewById(R.id.mViewPager);
+
         mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setCurrentItem(1);
 
         for (int i = 0; i < 5; i++) {
             tabLayout.addTab(tabLayout.newTab().setText("收益榜" + i));
