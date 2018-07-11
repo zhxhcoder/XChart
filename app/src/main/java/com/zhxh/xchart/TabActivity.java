@@ -50,6 +50,7 @@ public class TabActivity extends AppCompatActivity implements ItemFragment.OnLis
         }
 
         for (int i = 0; i < titleList.size(); i++) {
+            //从源码上看这个不起作用 起作用的是getPageTitle
             tabLayout.addTab(tabLayout.newTab().setText("tab" + i));
         }
 
