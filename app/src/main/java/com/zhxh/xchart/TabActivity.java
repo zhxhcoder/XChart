@@ -55,7 +55,7 @@ public class TabActivity extends AppCompatActivity implements ItemFragment.OnLis
         mViewPager.setCurrentItem(0);
 
         for (int i = 0; i < titleList.size(); i++) {
-            tabLayout.addTab(tabLayout.newTab().setText(titleList.get(i)));
+            tabLayout.addTab(tabLayout.newTab().setText(""));
         }
 
         tabLayout.setupWithViewPager(mViewPager);
