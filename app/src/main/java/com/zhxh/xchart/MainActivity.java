@@ -3,10 +3,10 @@ package com.zhxh.xchart;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.zhxh.xchart.dummy.ChartData;
 import com.zhxh.xchartlib.LineChart;
 
 import java.util.ArrayList;

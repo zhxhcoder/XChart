@@ -9,7 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
-import com.zhxh.xchart.dummy.DummyContent;
+import com.zhxh.xchart.dummy.ChartData;
 
 public class TabActivity extends AppCompatActivity implements ItemFragment.OnListFragmentInteractionListener {
 
@@ -54,7 +54,7 @@ public class TabActivity extends AppCompatActivity implements ItemFragment.OnLis
     }
 
     @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+    public void onListFragmentInteraction(ChartData item) {
 
     }
 

@@ -7,22 +7,17 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.zhxh.xchart.ItemFragment.OnListFragmentInteractionListener;
-import com.zhxh.xchart.dummy.DummyContent.DummyItem;
+import com.zhxh.xchart.dummy.ChartData;
 import com.zhxh.xchartlib.LineChart;
 
 import java.util.List;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
- */
 public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
+    private final List<ChartData> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyItemRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
+    public MyItemRecyclerViewAdapter(List<ChartData> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -37,10 +32,9 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
-        holder.lineChart1.bindData(mValues.get(position).testDatas);
-        holder.lineChart1.show();
+        holder.content.setText(mValues.get(position).getName());
+        holder.lineChart.bindData(mValues.get(position).getList());
+        holder.lineChart.show();
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,22 +55,20 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public final LineChart lineChart1;
-        public DummyItem mItem;
+        public final TextView content;
+        public final LineChart lineChart;
+        public ChartData mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.item_number);
-            mContentView = (TextView) view.findViewById(R.id.content);
-            lineChart1 = (LineChart) view.findViewById(R.id.lineChart1);
+            content = (TextView) view.findViewById(R.id.content);
+            lineChart = (LineChart) view.findViewById(R.id.lineChart);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + content.getText() + "'";
         }
     }
 }
