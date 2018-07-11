@@ -56,7 +56,6 @@ public class LineChart extends View {
 
     private int showType;
 
-    Path shaderPath = new Path();
     Paint paintShader;
 
     String yUnit = "";
@@ -206,6 +205,7 @@ public class LineChart extends View {
         paintAxis.setColor(axisColor);
         paintAxis.setStrokeWidth(0.5f * density);
 
+        paintShader = new Paint();
         paintShader = new Paint();
         Shader mShader = new LinearGradient(canvasWidth, canvasHeight, canvasWidth, 0,
                 new int[]{shaderStartColor, shaderEndColor},
@@ -417,26 +417,25 @@ public class LineChart extends View {
         return minValue;
     }
 
+    Path shaderPath = new Path();
 
     private void drawItemData(int i) {
 
         IAxisValue item = dataList.get(i);
 
-        if (i == 0) {
-            shaderPath.moveTo(pOrigin.x, pOrigin.y);
-            shaderPath.lineTo(pOrigin.x + i * xDataOffset, getDataYvalue(item.yValue()));
-        } else if (i == dataNum - 1) {
-            shaderPath.lineTo(pOrigin.x + i * xDataOffset, getDataYvalue(item.yValue()));
-            shaderPath.lineTo(pRight.x, pRight.y);
-            shaderPath.close();
-            canvas.drawPath(shaderPath, paintShader);
-        } else {
-            shaderPath.lineTo(pOrigin.x + i * xDataOffset, getDataYvalue(item.yValue()));
-        }
-
+        //if (i == 0) {
+        //    shaderPath.moveTo(pOrigin.x, pOrigin.y);
+        //    shaderPath.lineTo(pOrigin.x + i * xDataOffset, getDataYvalue(item.yValue()));
+        //} else if (i == dataNum - 1) {
+        //    shaderPath.lineTo(pOrigin.x + i * xDataOffset, getDataYvalue(item.yValue()));
+        //    shaderPath.lineTo(pRight.x, pRight.y);
+        //    shaderPath.close();
+        //    canvas.drawPath(shaderPath, paintShader);
+        //} else {
+        //    shaderPath.lineTo(pOrigin.x + i * xDataOffset, getDataYvalue(item.yValue()));
+        //}
 
         canvas.drawPoint(pOrigin.x + i * xDataOffset, getDataYvalue(item.yValue()), paintLine);
-
         //canvas.drawLine(pOrigin.x + i * xDataOffset, pOrigin.y, pOrigin.x + i * xDataOffset, getDataYvalue(item.yValue()), paintLine);
 
         if (i >= 1) {
@@ -444,7 +443,16 @@ public class LineChart extends View {
 
             canvas.drawLine(pOrigin.x + (i - 1) * xDataOffset, getDataYvalue(item0.yValue())
                     , pOrigin.x + i * xDataOffset, getDataYvalue(item.yValue()), paintLine);
+
+            Path shaderTempPath = new Path();
+            shaderTempPath.moveTo(pOrigin.x + (i - 1) * xDataOffset, pRight.y);
+            shaderTempPath.lineTo(pOrigin.x + (i - 1) * xDataOffset, getDataYvalue(item0.yValue()));
+            shaderTempPath.lineTo(pOrigin.x + i * xDataOffset, getDataYvalue(item.yValue()));
+            shaderTempPath.lineTo(pOrigin.x + i * xDataOffset, pRight.y);
+            shaderTempPath.close();
+            canvas.drawPath(shaderTempPath, paintShader);
         }
+
 
     }
 }
