@@ -1,5 +1,9 @@
 package com.zhxh.xchart.dummy;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.zhxh.xchart.ChartData;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +16,7 @@ import java.util.Map;
  * TODO: Replace all uses of this class before publishing your app.
  */
 public class DummyContent {
+    static String testResult = "[{\"logDay\":\"20160912\",\"yield\":\"0\"},{\"logDay\":\"20161021\",\"yield\":\"126.73\"},{\"logDay\":\"20161123\",\"yield\":\"170.76\"},{\"logDay\":\"20161226\",\"yield\":\"251.48\"},{\"logDay\":\"20170203\",\"yield\":\"260.03\"},{\"logDay\":\"20170308\",\"yield\":\"282.79\"},{\"logDay\":\"20170412\",\"yield\":\"283.97\"},{\"logDay\":\"20170516\",\"yield\":\"367.10\"},{\"logDay\":\"20170620\",\"yield\":\"275.20\"},{\"logDay\":\"20170721\",\"yield\":\"148.27\"},{\"logDay\":\"20170823\",\"yield\":\"279.44\"},{\"logDay\":\"20170925\",\"yield\":\"401.01\"},{\"logDay\":\"20171102\",\"yield\":\"425.70\"},{\"logDay\":\"20171205\",\"yield\":\"401.86\"},{\"logDay\":\"20180108\",\"yield\":\"430.53\"},{\"logDay\":\"20180208\",\"yield\":\"308.31\"},{\"logDay\":\"20180320\",\"yield\":\"359.98\"},{\"logDay\":\"20180424\",\"yield\":\"337.41\"},{\"logDay\":\"20180529\",\"yield\":\"314.25\"},{\"logDay\":\"20180709\",\"yield\":\"230.41\"}]";
 
     /**
      * An array of sample (dummy) items.
@@ -57,11 +62,14 @@ public class DummyContent {
         public final String id;
         public final String content;
         public final String details;
+        public List<ChartData> testDatas;
 
         public DummyItem(String id, String content, String details) {
             this.id = id;
             this.content = content;
             this.details = details;
+            this.testDatas = new Gson().fromJson(testResult, new TypeToken<List<ChartData>>() {
+            }.getType());
         }
 
         @Override

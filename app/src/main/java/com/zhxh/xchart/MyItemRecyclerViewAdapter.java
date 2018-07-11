@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.zhxh.xchart.ItemFragment.OnListFragmentInteractionListener;
 import com.zhxh.xchart.dummy.DummyContent.DummyItem;
+import com.zhxh.xchartlib.LineChart;
 
 import java.util.List;
 
@@ -38,6 +39,8 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         holder.mItem = mValues.get(position);
         holder.mIdView.setText(mValues.get(position).id);
         holder.mContentView.setText(mValues.get(position).content);
+        holder.lineChart1.bindData(mValues.get(position).testDatas);
+        holder.lineChart1.show();
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,6 +63,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
+        public final LineChart lineChart1;
         public DummyItem mItem;
 
         public ViewHolder(View view) {
@@ -67,6 +71,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
             mView = view;
             mIdView = (TextView) view.findViewById(R.id.item_number);
             mContentView = (TextView) view.findViewById(R.id.content);
+            lineChart1 = (LineChart) view.findViewById(R.id.lineChart1);
         }
 
         @Override
