@@ -50,7 +50,7 @@ public class TabActivity extends AppCompatActivity implements ItemFragment.OnLis
         }
 
         for (int i = 0; i < titleList.size(); i++) {
-            tabLayout.addTab(tabLayout.newTab().setText("tab"+i));
+            tabLayout.addTab(tabLayout.newTab().setText("tab" + i));
         }
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
