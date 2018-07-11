@@ -49,17 +49,16 @@ public class TabActivity extends AppCompatActivity implements ItemFragment.OnLis
             titleList.add("收益榜" + i);
         }
 
+        for (int i = 0; i < titleList.size(); i++) {
+            tabLayout.addTab(tabLayout.newTab().setText("tab"+i));
+        }
+
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setCurrentItem(0);
 
-        for (int i = 0; i < titleList.size(); i++) {
-            tabLayout.addTab(tabLayout.newTab().setText(""));
-        }
-
         tabLayout.setupWithViewPager(mViewPager);
-
 
     }
 
