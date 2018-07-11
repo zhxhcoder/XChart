@@ -1,7 +1,9 @@
 package com.zhxh.xchart;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -51,6 +53,11 @@ public class MainActivity extends AppCompatActivity {
         lineChart0.show();
         lineChart1.bindData(testDatas);
         lineChart1.show();
+
+
+        lineChart0.setOnClickListener(v -> startActivity(new Intent(MainActivity.this,TabActivity.class)));
+
+
 
         lineChart2.bindData(dataList1);
         lineChart2.bindYUnit("万");
