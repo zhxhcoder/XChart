@@ -23,9 +23,6 @@ public class TabActivity extends AppCompatActivity implements ItemFragment.OnLis
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
     private ViewPager mViewPager;
     private TabLayout tabLayout;
 
@@ -36,13 +33,13 @@ public class TabActivity extends AppCompatActivity implements ItemFragment.OnLis
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-        // Set up the ViewPager with the sections adapter.
+
         tabLayout = findViewById(R.id.tabLayout);
         mViewPager = findViewById(R.id.mViewPager);
+
+
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setCurrentItem(1);
@@ -78,7 +75,7 @@ public class TabActivity extends AppCompatActivity implements ItemFragment.OnLis
 
         @Override
         public int getCount() {
-            return 5;
+            return 6;
         }
     }
 }
