@@ -34,6 +34,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         holder.mItem = mValues.get(position);
         holder.content.setText(mValues.get(position).getName());
         holder.lineChart.bindData(mValues.get(position).getList());
+        holder.lineChart.bindAnimTime(1000);
         holder.lineChart.show();
 
         holder.mView.setOnClickListener(new View.OnClickListener() {

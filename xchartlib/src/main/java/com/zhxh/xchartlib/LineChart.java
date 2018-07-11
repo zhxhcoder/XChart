@@ -46,10 +46,11 @@ public class LineChart extends View {
     private float minY;
     private float maxY;
 
-    private static final int intervals = 87;
+    private long intervals = 87;
     private float xDataOffset;
     private Canvas canvas;
 
+    private long animTime;
     private boolean isAnim;
     private int showXcount;
     private int showYcount;
@@ -290,6 +291,10 @@ public class LineChart extends View {
         return this;
     }
 
+    public LineChart bindAnimTime(long animTime) {
+        this.animTime = animTime;
+        return this;
+    }
 
     public LineChart bindYUnit(String yUnit) {
         this.yUnit = yUnit;
@@ -367,6 +372,7 @@ public class LineChart extends View {
         xDataOffset = (pRight.x - pOrigin.x) / (dataNum - 1);
 
         if (isAnim) {
+            intervals = animTime / dataNum;
             for (int i = 0; i < progress; i++) {
                 drawItemData(i);
             }
@@ -420,6 +426,10 @@ public class LineChart extends View {
     Path shaderPath = new Path();
 
     private void drawItemData(int i) {
+
+        if (i >= dataNum) {
+            return;
+        }
 
         IAxisValue item = dataList.get(i);
 
