@@ -1,15 +1,16 @@
 rootProject.name = 'XChart'
 ext {
 
-    android = [compileSdkVersion: 27,
-               buildToolsVersion: '27.0.3',
-               applicationId    : 'com.niuguwang.stock',
-               minSdkVersion    : 16,
-               targetSdkVersion : 27,
-               versionCode      : 10,
-               versionName      : '2.6',
-               minifyEnabled    : false,
-               outputFileName   : "xchart.aar"
+    android = [
+            compileSdkVersion: 27,
+            buildToolsVersion: '27.0.3',
+            applicationId    : 'com.niuguwang.stock',
+            minSdkVersion    : 16,
+            targetSdkVersion : 27,
+            versionCode      : 10,
+            versionName      : '2.6',
+            minifyEnabled    : false,
+            outputFileName   : "xchart.aar"
     ]
 
     dependencies = [
@@ -17,20 +18,21 @@ ext {
             'libConstraintLayout': 'com.android.support.constraint:constraint-layout:1.1.2',
     ]
 
-    bintray = ['version'    : "2.6",
-               'groupId'    : 'com.zhxh',//groupId
-               'publish'    : true,
-               'packageName': 'XChart',//packageName
-               'userOrg'    : 'zhxh',//自己bintray创建的organization名称
-               'siteUrl'    : 'https://github.com/zhxhcoder/XChart',  //项目的主页
-               'gitUrl'     : 'https://github.com/zhxhcoder/XChart.git', //github仓库的地址
-               'repo'       : 'android', //创建的仓库名字
-               'name'       : 'XChart',
-               'desc'       : 'extent chart with more customized feature',//版本描述
-               'userId'     : 'geekcoder',
-               'userEmail'     : 'zhxhcoder@gmail.com',
-               'vcsTag'     : 'v2.6'
-               ]
+    bintray = [
+            'version'    : "2.6",
+            'groupId'    : 'com.zhxh',//groupId
+            'publish'    : true,
+            'packageName': 'XChart',//packageName
+            'userOrg'    : 'zhxh',//自己bintray创建的organization名称
+            'siteUrl'    : 'https://github.com/zhxhcoder/XChart',  //项目的主页
+            'gitUrl'     : 'https://github.com/zhxhcoder/XChart.git', //github仓库的地址
+            'repo'       : 'android', //创建的仓库名字
+            'name'       : 'XChart',
+            'desc'       : 'extent chart with more customized feature',//版本描述
+            'userId'     : 'geekcoder',
+            'userEmail'  : 'zhxhcoder@gmail.com',
+            'vcsTag'     : 'v2.6'
+    ]
 
 }
 
