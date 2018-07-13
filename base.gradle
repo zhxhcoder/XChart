@@ -7,24 +7,30 @@ ext {
                minSdkVersion    : 16,
                targetSdkVersion : 27,
                versionCode      : 10,
-               versionName      : '2.6'
+               versionName      : '2.6',
+               minifyEnabled    : false,
+               outputFileName   : "xchart.aar"
     ]
 
-    dependence = [
-            'libSupportV7'       : 'com.android.support:appcompat-v7:26.1.0',
-            'libSupportV4'       : 'com.android.support:support-v4:26.1.0',
-            'libSupportDesign'   : 'com.android.support:design:26.1.0',
+    dependencies = [
+            'libSupportV7'       : 'com.android.support:appcompat-v7:27.1.1',
             'libConstraintLayout': 'com.android.support.constraint:constraint-layout:1.1.2',
     ]
 
     bintray = ['version'    : "2.6",
-               'group'      : 'com.zhxh',
-               'siteUrl'    : 'https://github.com/zhxhcoder/XChart',
-               'gitUrl'     : 'https://github.com/zhxhcoder/XChart.git',
-               'siteUrl'    : 'https://github.com/zhxhcoder/XChart',
-               'repo'    : 'android',
-               'name'    : 'XChart',
-               'keyPassword': 'niuguwang.com']
+               'groupId'    : 'com.zhxh',//groupId
+               'publish'    : true,
+               'packageName': 'XChart',//packageName
+               'userOrg'    : 'zhxh',//自己bintray创建的organization名称
+               'siteUrl'    : 'https://github.com/zhxhcoder/XChart',  //项目的主页
+               'gitUrl'     : 'https://github.com/zhxhcoder/XChart.git', //github仓库的地址
+               'repo'       : 'android', //创建的仓库名字
+               'name'       : 'XChart',
+               'desc'       : 'extent chart with more customized feature',//版本描述
+               'userId'     : 'geekcoder',
+               'userEmail'     : 'zhxhcoder@gmail.com',
+               'vcsTag'     : 'v2.6'
+               ]
 
 }
 
