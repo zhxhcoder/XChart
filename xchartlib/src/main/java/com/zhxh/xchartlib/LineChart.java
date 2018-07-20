@@ -63,6 +63,8 @@ public class LineChart extends View {
 
     boolean isBlank;
 
+    private final float shadowOffset = 0.5f;
+
     /**
      * 既可以在xml中配置也可以直接代码生成
      *
@@ -455,7 +457,7 @@ public class LineChart extends View {
             shaderTempPath.moveTo(pOrigin.x + (i - 1) * xDataOffset, pRight.y);
             shaderTempPath.lineTo(pOrigin.x + (i - 1) * xDataOffset, getDataYvalue(item0.yValue()));
             shaderTempPath.lineTo(pOrigin.x + i * xDataOffset, getDataYvalue(item.yValue()));
-            shaderTempPath.lineTo(pOrigin.x + i * xDataOffset, pRight.y);
+            shaderTempPath.lineTo(pOrigin.x + i * xDataOffset + shadowOffset, pRight.y);
             shaderTempPath.close();
             canvas.drawPath(shaderTempPath, paintShader);
         }
