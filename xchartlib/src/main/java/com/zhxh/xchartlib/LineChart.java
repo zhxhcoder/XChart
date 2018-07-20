@@ -456,7 +456,7 @@ public class LineChart extends View {
             Path shaderTempPath = new Path();
             shaderTempPath.moveTo(pOrigin.x + (i - 1) * xDataOffset, pRight.y);
             shaderTempPath.lineTo(pOrigin.x + (i - 1) * xDataOffset, getDataYvalue(item0.yValue()));
-            shaderTempPath.lineTo(pOrigin.x + i * xDataOffset, getDataYvalue(item.yValue()));
+            shaderTempPath.lineTo(pOrigin.x + i * xDataOffset + shadowOffset, getDataYvalue(item.yValue()));
             shaderTempPath.lineTo(pOrigin.x + i * xDataOffset + shadowOffset, pRight.y);
             shaderTempPath.close();
             canvas.drawPath(shaderTempPath, paintShader);
