@@ -3,13 +3,13 @@ apply plugin: 'com.jfrog.bintray'
 apply plugin: 'com.github.dcendents.android-maven'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
 
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 27
-        versionCode 11
-        versionName "2.7"
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
     }
 
     buildTypes {
@@ -29,7 +29,7 @@ android {
     android.libraryVariants.all {
         variant ->
             variant.outputs.all {
-                outputFileName = "xchart.aar"
+                outputFileName = rootProject.ext.build.outputFileName
             }
     }
 }
@@ -45,14 +45,14 @@ this.project.afterEvaluate {
 /** 执行完成打包后将文件复制到主项目的资源文件中*/
 task copyApk {
     doLast {
-        if (rootProject.file('app/libs/xchart.aar').exists()) {
-            println('我先删除了旧的xchart.aar')
-            rootProject.file('pp/libs/xchart.aar').delete()
+        if (rootProject.file('app/libs/'+rootProject.ext.build.outputFileName).exists()) {
+            println('我先删除了旧的aar包')
+            rootProject.file('app/libs/'+rootProject.ext.build.outputFileName).delete()
         }
         copy {
-            from "${buildDir}/outputs/aar/xchart.aar"
+            from "${buildDir}/outputs/aar/"+rootProject.ext.build.outputFileName
             into rootProject.file('app/libs/')
-            println('新的xchart.aar已经复制到app/libs/')
+            println('新的aar包已经复制到app/libs/')
         }
     }
 
@@ -60,33 +60,33 @@ task copyApk {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation rootProject.ext.dependencies.libSupportV7
 }
 
-def siteUrl = 'https://github.com/zhxhcoder/XChart'   //项目的主页
-def gitUrl = 'https://github.com/zhxhcoder/XChart.git'   //github仓库的地址
+def siteUrl = rootProject.ext.bintray.siteUrl   //项目的主页
+def gitUrl = rootProject.ext.bintray.gitUrl   //github仓库的地址
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
-version = "2.7"//version
-group = "com.zhxh"//groupId
+version = rootProject.ext.bintray.version//version
+group = rootProject.ext.bintray.group//groupId
 bintray {
     user = properties.getProperty("bintray.user")
     key = properties.getProperty("bintray.apikey")
     pkg {
-        repo = 'android'//创建的仓库名字
-        name = 'XChart'//packageName
+        repo = rootProject.ext.bintray.repo//创建的仓库名字
+        name = rootProject.ext.bintray.name//packageName
         websiteUrl = siteUrl
         vcsUrl = gitUrl
         licenses = ['Apache-2.0']//创建仓库时选择的license type
-        userOrg = 'zhxh' //自己bintray创建的organization名称
+        userOrg = rootProject.ext.bintray.userOrg //自己bintray创建的organization名称
         publish = true // 是否是公开项目。
 
         version {
-            name = '2.7'//版本号
-            desc = 'extent chart with more customized feature'//版本描述
+            name = rootProject.ext.bintray.name//版本号
+            desc = rootProject.ext.bintray.desc//版本描述
             released = new Date()
-            vcsTag = 'v2.7'
+            vcsTag = rootProject.ext.bintray.vcsTag
             attributes = ['gradle-plugin': 'com.use.less:com.use.less.gradle:gradle-useless-plugin']
         }
     }
@@ -98,7 +98,7 @@ install {
             project {
                 packaging 'aar'
                 //项目描述
-                description 'extent chart with more customized feature'
+                description rootProject.ext.bintray.desc
                 url siteUrl
                 // 填写开源协议
                 licenses {
@@ -109,9 +109,9 @@ install {
                 }
                 developers {
                     developer {
-                        id 'geekcoder'
+                        id rootProject.ext.bintray.userId
                         //填写邮件地址
-                        email 'zhxhcoder@gmail.com'
+                        email rootProject.ext.bintray.userEmail
                     }
                 }
                 scm {

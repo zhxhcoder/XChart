@@ -1,4 +1,3 @@
-rootProject.name = 'XChart'
 ext {
 
     android = [
@@ -7,8 +6,8 @@ ext {
             applicationId    : 'com.niuguwang.stock',
             minSdkVersion    : 16,
             targetSdkVersion : 27,
-            versionCode      : 10,
-            versionName      : '2.6',
+            versionCode      : 11,
+            versionName      : '2.7',
             minifyEnabled    : false,
             outputFileName   : "xchart.aar"
     ]
@@ -18,8 +17,12 @@ ext {
             'libConstraintLayout': 'com.android.support.constraint:constraint-layout:1.1.2',
     ]
 
+    build = [
+            'outputFileName'       : 'xchart.aar',
+    ]
+
     bintray = [
-            'version'    : "2.6",
+            'version'    : "2.7",
             'groupId'    : 'com.zhxh',//groupId
             'publish'    : true,
             'packageName': 'XChart',//packageName
@@ -31,7 +34,7 @@ ext {
             'desc'       : 'extent chart with more customized feature',//版本描述
             'userId'     : 'geekcoder',
             'userEmail'  : 'zhxhcoder@gmail.com',
-            'vcsTag'     : 'v2.6'
+            'vcsTag'     : 'v2.7'
     ]
 
 }
