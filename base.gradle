@@ -3,11 +3,11 @@ ext {
     android = [
             compileSdkVersion: 27,
             buildToolsVersion: '27.0.3',
-            applicationId    : 'com.niuguwang.stock',
+            applicationId    : 'com.zhxh.xchart',
             minSdkVersion    : 16,
             targetSdkVersion : 27,
-            versionCode      : 11,
-            versionName      : '2.7',
+            versionCode      : 12,
+            versionName      : '2.8',
             minifyEnabled    : false,
             outputFileName   : "xchart.aar"
     ]
@@ -22,7 +22,7 @@ ext {
     ]
 
     bintray = [
-            'version'    : "2.7",
+            'version'    : "2.8",
             'groupId'    : 'com.zhxh',//groupId
             'publish'    : true,
             'packageName': 'XChart',//packageName
@@ -34,7 +34,7 @@ ext {
             'desc'       : 'extent chart with more customized feature',//版本描述
             'userId'     : 'geekcoder',
             'userEmail'  : 'zhxhcoder@gmail.com',
-            'vcsTag'     : 'v2.7'
+            'vcsTag'     : 'v2.8'
     ]
 
 }
