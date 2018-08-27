@@ -83,7 +83,7 @@ bintray {
         publish = true // 是否是公开项目。
 
         version {
-            name = rootProject.ext.bintray.name//版本号
+            name = rootProject.ext.bintray.version//版本号
             desc = rootProject.ext.bintray.desc//版本描述
             released = new Date()
             vcsTag = rootProject.ext.bintray.vcsTag
