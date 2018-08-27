@@ -69,7 +69,7 @@ Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
 version = rootProject.ext.bintray.version//version
-group = rootProject.ext.bintray.group//groupId
+group = rootProject.ext.bintray.groupId//groupId
 bintray {
     user = properties.getProperty("bintray.user")
     key = properties.getProperty("bintray.apikey")
