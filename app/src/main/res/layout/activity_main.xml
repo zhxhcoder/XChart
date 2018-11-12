@@ -8,6 +8,26 @@
     tools:context=".MainActivity">
 
     <com.zhxh.xchartlib.LineChart
+        android:id="@+id/lineChartSmall"
+        android:layout_width="88dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="14dp"
+        android:background="@android:color/white"
+        app:XaxisColor="#E8E8E8"
+        app:XcanvasHeight="52dp"
+        app:XcanvasWidth="88dp"
+        app:XisAnim="false"
+        app:XlineColor="#ff4c51"
+        app:XshaderEndColor="#70ff4c51"
+        app:XshaderStartColor="#00ff4c51"
+        app:XshowXcount="2"
+        app:XshowYcount="0"
+        app:XtextColor="#8997A5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.zhxh.xchartlib.LineChart
         android:id="@+id/lineChart0"
         android:layout_width="260dp"
         android:layout_height="140dp"
@@ -27,25 +47,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.zhxh.xchartlib.LineChart
-        android:id="@+id/lineChart1"
-        android:layout_width="88dp"
-        android:layout_height="52dp"
-        android:layout_marginTop="4dp"
-        android:background="@android:color/white"
-        app:XaxisColor="#E8E8E8"
-        app:XcanvasHeight="52dp"
-        app:XcanvasWidth="88dp"
-        app:XisAnim="true"
-        app:XlineColor="#ff4c51"
-        app:XshaderEndColor="#70ff4c51"
-        app:XshaderStartColor="#00ff4c51"
-        app:XshowXcount="0"
-        app:XshowYcount="0"
-        app:XtextColor="#8997A5"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <com.zhxh.xchartlib.LineChart
         android:id="@+id/lineChart2"

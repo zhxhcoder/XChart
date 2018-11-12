@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    LineChart lineChartSmall;
     LineChart lineChart0;
-    LineChart lineChart1;
     LineChart lineChart2;
     LineChart lineChart3;
     List<ChartData> dataList1;
@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         lineChart0 = findViewById(R.id.lineChart0);
-        lineChart1 = findViewById(R.id.lineChart1);
+        lineChartSmall = findViewById(R.id.lineChartSmall);
         lineChart2 = findViewById(R.id.lineChart2);
         lineChart3 = findViewById(R.id.lineChart3);
 
@@ -49,15 +49,13 @@ public class MainActivity extends AppCompatActivity {
         dataList1.add(new ChartData("05-09", "947.24"));
         dataList1.add(new ChartData("05-10", "1324.60"));
 
+        lineChartSmall.bindData(testDatas);
+        lineChartSmall.show();
+
         lineChart0.bindData(testDatas);
         lineChart0.show();
-        lineChart1.bindData(testDatas);
-        lineChart1.show();
 
-
-        lineChart0.setOnClickListener(v -> startActivity(new Intent(MainActivity.this,TabActivity.class)));
-
-
+        lineChart0.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, TabActivity.class)));
 
         lineChart2.bindData(dataList1);
         lineChart2.bindYUnit("万");
