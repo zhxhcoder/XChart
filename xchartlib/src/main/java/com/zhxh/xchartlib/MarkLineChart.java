@@ -20,6 +20,7 @@ import java.util.List;
 
 /**
  * Created by zhxh on 2018/11/12
+ * 牛人榜图
  */
 public class MarkLineChart extends View {
 
