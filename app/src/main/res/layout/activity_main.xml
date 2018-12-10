@@ -7,12 +7,16 @@
     android:background="#FFf3f4f5"
     tools:context=".MainActivity">
 
+
+
+
     <com.zhxh.xchartlib.LineChart
         android:id="@+id/lineChartSmall"
         android:layout_width="88dp"
         android:layout_height="52dp"
         android:layout_marginTop="14dp"
         android:background="@android:color/white"
+        
         app:XaxisColor="#E8E8E8"
         app:XcanvasHeight="52dp"
         app:XcanvasWidth="88dp"

@@ -3,10 +3,12 @@ package com.zhxh.xchart;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.zhxh.xchart.dummy.ChartData;
+import com.zhxh.xchart.dummy.PayResultCallBackData;
 import com.zhxh.xchartlib.LineChart;
 
 import java.util.ArrayList;
@@ -27,6 +29,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        PayResultCallBackData data = new PayResultCallBackData();
+        data.setType(1);
+        String json = new Gson().toJson(data);
+
+        Log.d("coursePaymentCallBack", "json " + json );
+        Log.d("coursePaymentCallBack", "javascript:coursePaymentCallBack(" + json + ")");
+
 
         lineChart0 = findViewById(R.id.lineChart0);
         lineChartSmall = findViewById(R.id.lineChartSmall);
