@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.zhxh.xchart.dummy.ChartData;
 import com.zhxh.xchart.dummy.PayResultCallBackData;
+import com.zhxh.xchart.linechart.LineMainActivity;
 import com.zhxh.xchartlib.LineChart;
 
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         data.setType(1);
         String json = new Gson().toJson(data);
 
-        Log.d("coursePaymentCallBack", "json " + json );
+        Log.d("coursePaymentCallBack", "json " + json);
         Log.d("coursePaymentCallBack", "javascript:coursePaymentCallBack(" + json + ")");
 
 
@@ -66,7 +67,10 @@ public class MainActivity extends AppCompatActivity {
         lineChart0.bindData(testDatas);
         lineChart0.show();
 
-        lineChart0.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, TabActivity.class)));
+        lineChart0.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, TabActivity.class));
+            startActivity(new Intent(MainActivity.this, LineMainActivity.class));
+        });
 
         lineChart2.bindData(dataList1);
         lineChart2.bindYUnit("万");
